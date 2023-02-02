@@ -10,7 +10,8 @@ const suggested = [
   },
   {
     word: "Autobiographical memory",
-    definition: "the memory of one’s own life",
+    definition:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud.",
   },
   {
     word: "Episodic memory",
@@ -30,12 +31,12 @@ const ModalContent = () => {
   return (
     <Box
       sx={{
-        width: "60vw",
+        width: "50vw",
         height: "60vh",
         backgroundColor: "#080A29",
         position: "absolute",
         top: "20%",
-        left: "20%",
+        left: "25%",
         display: "flex",
         borderRadius: 4,
         border: "none",
@@ -46,6 +47,7 @@ const ModalContent = () => {
         flexDirection: "column",
         alignItems: "center",
         gap: 5,
+        boxShadow: "0px 0px 4px rgba(125, 125, 125, 0.75)",
       }}
     >
       <Box
@@ -71,6 +73,10 @@ const ModalContent = () => {
           gap: 4,
           display: "flex",
           flexDirection: "column",
+          overflow: "auto",
+          "::-webkit-scrollbar": {
+            display: "none",
+          },
         }}
       >
         <Typography

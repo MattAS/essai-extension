@@ -13,7 +13,7 @@ const Content = () => {
     setOpened(false);
   };
   return (
-    <>
+    <div>
       <div id="essai-widget" onClick={handleOpen} />
       <Modal
         open={opened}
@@ -21,17 +21,17 @@ const Content = () => {
         closeAfterTransition
         sx={{
           "& .MuiBackdrop-root": {
-            backgroundColor: "transparent",
-          },
-          // Transition
-          "& .MuiModal-root": {
-            transition: "all 0.3s ease-in-out",
+            backgroundColor: "rgba(8, 10, 41, 0.70)",
           },
         }}
       >
-        <ModalContent />
+        <Fade in={opened}>
+          <div>
+            <ModalContent />
+          </div>
+        </Fade>
       </Modal>
-    </>
+    </div>
   );
 };
 
