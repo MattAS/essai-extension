@@ -1,7 +1,9 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import "./index.css";
-import Content from "./content_script";
+import "./style.css";
+import Content from "./Content";
+import { ThemeProvider } from "@mui/material";
+import theme from "./theme";
 
 const root = document.createElement("div");
 root.id = "crx-root";
@@ -29,6 +31,8 @@ console.log(input.value);
 
 ReactDOM.createRoot(root as HTMLElement).render(
   <React.StrictMode>
-    <Content />
+    <ThemeProvider theme={theme}>
+      <Content />
+    </ThemeProvider>
   </React.StrictMode>
 );
