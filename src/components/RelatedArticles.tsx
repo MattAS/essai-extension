@@ -1,45 +1,60 @@
 import { Box, Typography } from "@mui/material";
-import React from "react";
+import React, { useMemo } from "react";
+import FaviconIcon from "./FaviconIcon";
 
-const RelatedArticles = () => {
+const RelatedArticles = ({ paper }: any) => {
+  //Get domain of link
+  const [domain, title, openAccess, url] = useMemo(() => {
+    const title = paper.title;
+    const openAccess = paper.isOpenAccess;
+    if (openAccess) {
+      const url = paper.openAccessPdf.url;
+      const domain = new URL(url).hostname;
+      return [domain, title, openAccess, url];
+    } else {
+      const url = paper.url;
+      const domain = new URL(url).hostname;
+      return [domain, title, openAccess, url];
+    }
+  }, [paper]);
   return (
     <Box
       sx={{
+        all: "unset",
         display: "flex",
         flexDirection: "row",
         gap: 2,
         alignItems: "center",
-        width: "45%",
+        width: "40%",
         "&:hover": {
           backgroundColor: "rgba(129, 129, 129, 0.28)",
           cursor: "pointer",
+          textDecoration: "none",
+        },
+        "&:focus": {
+          outline: "none",
+        },
+        "&:visited": {
+          color: "inherit",
         },
         padding: 1.5,
         borderRadius: 2,
       }}
-      onClick={() => {
-        window.open("https://www.nature.com/articles/nmeth.3317", "_blank");
-      }}
+      component="a"
+      href={url}
+      target="_blank"
     >
-      <Box
-        sx={{
-          width: "40px",
-          height: "25px",
-          backgroundColor: "rgba(129, 129, 129, 0.20)",
-          padding: 2,
-          borderRadius: 1,
-          backgroundImage:
-            "url(https://www.google.com/s2/favicons?domain=www.nature.com&sz=32)",
-          backgroundPosition: "center",
-          backgroundRepeat: "no-repeat",
-        }}
-      />
+      <FaviconIcon domain={domain} openAccess={openAccess} />
       <Typography
+        textOverflow={"ellipsis"}
         sx={{
-          color: "white",
+          WebkitLineClamp: 2,
+          overflow: "hidden",
+          WebkitBoxOrient: "vertical",
+          display: "-webkit-box",
         }}
       >
-        HISAT: a fast spliced aligner with low memory requirements
+        {title}
       </Typography>
     </Box>
   );

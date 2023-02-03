@@ -1,33 +1,20 @@
-import { Box, Typography } from "@mui/material";
+import { Box, Input, Typography } from "@mui/material";
 import { BookOpen } from "lucide-react";
 import React from "react";
 import SuggestedWord from "./SuggestedWord";
+import { suggested } from "../mockData";
 
-const suggested = [
-  {
-    word: "reminisce",
-    definition: "to recall the past",
-  },
-  {
-    word: "Autobiographical memory",
-    definition:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud.",
-  },
-  {
-    word: "Episodic memory",
-    definition: "the memory of specific events",
-  },
-  {
-    word: "Semantic memory",
-    definition: "the memory of facts and general knowledge",
-  },
-  {
-    word: "Procedural memory",
-    definition: "the memory of how to do things",
-  },
-];
+interface IModalContentProps {
+  inputValue: string;
+}
 
-const ModalContent = () => {
+const ModalContent: React.FC<IModalContentProps> = ({ inputValue }) => {
+  const [openedIdx, setOpenedIdx] = React.useState<number | null>(null);
+
+  const handleOpen = (idx: number) => {
+    setOpenedIdx(idx);
+  };
+
   return (
     <Box
       sx={{
@@ -62,9 +49,23 @@ const ModalContent = () => {
           justifyContent: "space-between",
         }}
       >
-        <Typography sx={{ color: "white" }}>
-          How do people reminisce?
-        </Typography>
+        <Input
+          sx={{
+            all: "unset",
+            color: "white",
+            padding: 0,
+            fontSize: 14,
+            "&:focus": {
+              outline: "none",
+            },
+            "&:after": {
+              borderBottom: 0,
+            },
+            width: "100%",
+          }}
+          placeholder="Search for a keyword"
+          value={inputValue}
+        />
         <BookOpen color="white" size={24} />
       </Box>
       <Box
@@ -89,10 +90,14 @@ const ModalContent = () => {
         >
           suggested keywords
         </Typography>
-        {suggested.map((suggestion) => (
+        {suggested.map((suggestion, index) => (
           <SuggestedWord
-            word={suggestion.word}
+            key={index}
+            opened={openedIdx === index}
+            setOpened={() => handleOpen(index)}
+            word={suggestion.keyword}
             definition={suggestion.definition}
+            links={suggestion.papers}
           />
         ))}
       </Box>
