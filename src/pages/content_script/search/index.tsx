@@ -3,10 +3,10 @@ import ReactDOM from "react-dom/client";
 import "./style.css";
 import Content from "./Content";
 import { ThemeProvider } from "@mui/material";
-import theme from "./theme";
+import theme from "../theme";
 
 const root = document.createElement("div");
-root.id = "crx-root";
+root.id = "essai-root";
 
 const voiceElement =
   document.querySelector('[aria-label="Search by voice"]') ||

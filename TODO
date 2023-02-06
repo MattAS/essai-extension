@@ -1,6 +1,8 @@
 Features:
-    ☐ Create google scholar widget
-    ☐ Create google patents widget
     ☐ Create highlight and explain feature
-    ☐ Abstract of google search?
-    
+    ☐ Display already filtered keywords as they are produced (show autobiographical memory have a loading box below the card and load next cards as we go)
+    ☐ Summarize the article
+    ☐ QA 
+    ☐ Abstract
+    ☐ Highlight and hover with two options, one for summary and the other for related articles
+    ☐ Sometimes people have an endgoal in development (full stack). Our extension can give a "course plan" for that search

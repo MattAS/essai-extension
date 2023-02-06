@@ -1,6 +1,6 @@
 import { Box, Fade, Modal, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import ModalContent from "../../components/ModalContent";
+import ModalContent from "../../../components/ModalContent";
 import "./style.css";
 
 const Content = () => {

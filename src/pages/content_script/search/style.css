@@ -1,0 +1,15 @@
+#essai-root {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 0 8px;
+  }
+
+#essai-widget {
+    background-color: green;
+    width: 24px;
+    height: 24px;
+    border-radius: 100px;
+    cursor: pointer;
+}

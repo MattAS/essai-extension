@@ -6,7 +6,11 @@
     "content_scripts": [
         {
             "matches": ["https://www.google.com/*"],
-            "js": ["./src/pages/content_script/index.tsx"]
-        }
+            "js": ["./src/pages/content_script/search/index.tsx"]
+        },
+           { 
+             "matches": ["https://stackoverflow.com/*"],
+             "js": ["./src/pages/content_script/overlay/index.tsx"]
+           }
     ]
   }
