@@ -9,8 +9,24 @@
             "js": ["./src/pages/content_script/search/index.tsx"]
         },
            { 
-             "matches": ["https://stackoverflow.com/*"],
-             "js": ["./src/pages/content_script/overlay/index.tsx"]
+             "matches": ["https://*/*"],
+             "js": ["./src/pages/content_script/overlay/index.tsx"],
+             "exclude_matches": [
+                "https://www.twitch.tv/*",
+                "https://www.youtube.com/*"
+            ]
            }
-    ]
+    ],
+    "background": {
+        "service_worker": "src/background.ts",
+        "type": "module"
+    },
+    "permissions": [
+        "contextMenus",
+        "notifications",
+        "tabs",
+        "scripting",
+        "webRequest",
+        "storage"
+       ]
   }
