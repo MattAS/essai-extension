@@ -8,7 +8,7 @@ const LoadingText = () => {
         // Map over the array of 10 items to render 10 skeletons with variant text
         Array.from(Array(10).keys()).map((i) => (
           <Skeleton
-            key={i}
+            key={`Text-${i}`}
             variant="text"
             animation="wave"
             sx={{

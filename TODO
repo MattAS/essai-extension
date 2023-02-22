@@ -1,8 +1,10 @@
 Features:
-    ☐ Create highlight and explain feature
+    ✔ Create highlight and explain feature @done(23-02-21 15:37)
     ☐ Display already filtered keywords as they are produced (show autobiographical memory have a loading box below the card and load next cards as we go)
-    ☐ Summarize the article
+    ✔ Summarize the article @done(23-02-21 15:38)
     ☐ QA 
     ☐ Abstract
-    ☐ Highlight and hover with two options, one for summary and the other for related articles
+    ✘ Highlight and hover with two options, one for summary and the other for related articles @cancelled(23-02-21 15:38)
     ☐ Sometimes people have an endgoal in development (full stack). Our extension can give a "course plan" for that search
+    ☐ Make the extension appear programmatically
+    ☐ Move modals to programmatic

@@ -29,7 +29,7 @@ const TextQuestion: React.FC<ITextQuestionProps> = ({
         x2="12.5"
         y2="2.5"
         stroke={color}
-        stroke-linecap="round"
+        strokeLinecap="round"
       />
       <line
         x1="1.5"
@@ -37,7 +37,7 @@ const TextQuestion: React.FC<ITextQuestionProps> = ({
         x2="7.5"
         y2="5.5"
         stroke={color}
-        stroke-linecap="round"
+        strokeLinecap="round"
       />
       <line
         x1="1.5"
@@ -45,7 +45,7 @@ const TextQuestion: React.FC<ITextQuestionProps> = ({
         x2="7.5"
         y2="8.5"
         stroke={color}
-        stroke-linecap="round"
+        strokeLinecap="round"
       />
       <line
         x1="1.5"
@@ -53,19 +53,19 @@ const TextQuestion: React.FC<ITextQuestionProps> = ({
         x2="7.5"
         y2="11.5"
         stroke={color}
-        stroke-linecap="round"
+        strokeLinecap="round"
       />
       <path
         d="M10 6.74782C10.1167 6.51448 10.2917 6.28115 10.525 6.16448C10.7666 6.02482 11.0486 5.97182 11.3244 6.01425C11.6002 6.05668 11.8532 6.192 12.0417 6.39782C12.2167 6.63115 12.3333 6.86448 12.3333 7.15615C12.3333 7.91448 11.1667 8.32282 11.1667 8.32282"
         stroke={color}
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
       <path
         d="M11.1667 10.6561H11.1717"
         stroke={color}
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
     </svg>
   );

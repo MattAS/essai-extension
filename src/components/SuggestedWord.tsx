@@ -2,6 +2,7 @@ import { Box, Fade, IconButton, Typography } from "@mui/material";
 import { Globe, Maximize2, Minimize2, Search, X } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { moreSearchResults } from "../mockData";
+import LoadingArticles from "./loading/LoadingArticles";
 import RelatedArticles from "./RelatedArticles";
 
 interface ISuggestedWordProps {
@@ -41,9 +42,6 @@ const SuggestedWord: React.FC<ISuggestedWordProps> = ({
     setOpenArticles(!openArticles);
     setOpenSearch(false);
   };
-
-  console.log("opened", opened, openArticles, openSearch);
-
   const handleOpenSearch = () => {
     setOpened();
     setOpenSearch(!openSearch);
@@ -210,9 +208,11 @@ const SuggestedWord: React.FC<ISuggestedWordProps> = ({
               justifyContent: "space-between",
             }}
           >
-            {links.map((link) => (
-              <RelatedArticles paper={link} />
-            ))}
+            {links.length === 0 ? (
+              <LoadingArticles />
+            ) : (
+              links.map((link) => <RelatedArticles paper={link} />)
+            )}
           </Box>
         </Box>
       )}

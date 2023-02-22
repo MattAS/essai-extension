@@ -7,6 +7,7 @@ const RelatedArticles = ({ paper }: any) => {
   const [domain, title, openAccess, url] = useMemo(() => {
     const title = paper.title;
     const openAccess = paper.isOpenAccess;
+    if (title === undefined) return ["", "", false, ""];
     if (openAccess) {
       const url = paper.openAccessPdf.url;
       const domain = new URL(url).hostname;
@@ -17,6 +18,7 @@ const RelatedArticles = ({ paper }: any) => {
       return [domain, title, openAccess, url];
     }
   }, [paper]);
+
   return (
     <Box
       sx={{

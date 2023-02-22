@@ -1,11 +1,11 @@
 import { Box, Button, Typography } from "@mui/material";
 import axios from "axios";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { GripHorizontal, Microscope } from "lucide-react";
 import { useEffect, useState } from "react";
 import TextQuestion from "../../../../components/Icons/TextQuestion";
 import { readSummaryCache, writeSummaryCache } from "../../../../utils/cache";
-import LoadingText from "./LoadingText";
+import LoadingText from "../../../../components/loading/LoadingText";
 
 interface IExplainWindowProps {
   selection: string;
@@ -20,130 +20,146 @@ const ExplainWindow: React.FC<IExplainWindowProps> = ({
   const height = window.innerHeight;
   const width = window.innerWidth;
 
+  console.log(shouldLoad);
+
   useEffect(() => {
     if (shouldLoad) {
       setSummary("");
       chrome.storage.local.get(["essai-summary"], (result) => {
-        if (
-          result["essai-summary"].response &&
-          result["essai-summary"].selection.trim() === selection.trim()
-        ) {
+        console.log(result);
+        if (result.response && result.selection.trim() === selection.trim()) {
           setSummary(result["essai-summary"].response);
           return;
         } else {
-          const res = axios.post(
-            "https://essai-cloudflare-api.matthewanthonytest.workers.dev/api/summarize",
-            {
-              text: selection,
-            }
-          );
-          res.then((res) => {
-            writeSummaryCache({
-              response: res.data.text,
-              selection: selection,
+          console.log("IN");
+          axios
+            .post(
+              "https://essai-go-api-le4jqewulq-ue.a.run.app/api/summary/highlight",
+              {
+                text: selection,
+              }
+            )
+            .then((response) => {
+              console.log(response);
+              writeSummaryCache({
+                response: response.data.summary,
+                selection: selection,
+              });
+              setSummary(response.data.summary);
+            })
+            .catch((err) => {
+              console.log(err);
             });
-            setSummary(res.data.text);
-          });
         }
       });
     }
   }, [selection, shouldLoad]);
 
   return (
-    <Box
-      sx={{
-        maxWidth: "400px",
-        width: "30vw",
-        minHeight: "55vh",
-        backgroundColor: "#080A29",
-        borderRadius: 3,
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        padding: 3,
-        paddingX: 3,
-        zIndex: 1000,
-        userSelect: "none",
-        gap: 1,
-      }}
-      component={motion.div}
-      drag
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1, transition: { duration: 0.1 } }}
-      exit={{ opacity: 0, transition: { duration: 0.1 } }}
-      dragTransition={{ bounceStiffness: 600, bounceDamping: 10 }}
-      dragMomentum={false}
-      dragConstraints={{
-        top: 0,
-        left: -0.7 * width,
-        right: 0.04 * width,
-        bottom: 0.38 * height,
-      }}
-    >
-      <GripHorizontal size={24} color="#6D6D6D" cursor={"grab"} />
+    <AnimatePresence>
       <Box
         sx={{
-          width: "100%",
-          height: "100%",
+          minWidth: "400px",
+          maxWidth: "400px",
+          width: "30vw",
+          backgroundColor: "#080A29",
+          borderRadius: 3,
           display: "flex",
           flexDirection: "column",
-          justifyContent: "center",
-          gap: 3,
+          alignItems: "center",
+          padding: 3,
+          zIndex: 1000,
+          userSelect: "none",
+          gap: 1,
+        }}
+        component={motion.div}
+        drag
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1, transition: { duration: 0.1 } }}
+        exit={{ opacity: 0, transition: { duration: 0.2 } }}
+        dragTransition={{ bounceStiffness: 600, bounceDamping: 10 }}
+        dragMomentum={false}
+        dragConstraints={{
+          top: 0,
+          left: -0.7 * width,
+          right: 0.04 * width,
+          bottom: 0.38 * height,
         }}
       >
-        <Box sx={{ display: "flex", gap: 2, alignItems: "center", height: 20 }}>
-          <TextQuestion size={24} color="white" />
-          <Typography variant="h6" sx={{ color: "white", fontWeight: "bold" }}>
-            Explain & Rephrase
-          </Typography>
-        </Box>
-        <Box
-          sx={{
-            display: "flex",
-            flexGrow: 1,
-          }}
-        >
-          {summary === "" ? (
-            <LoadingText />
-          ) : (
-            <Typography
-              sx={{
-                color: "white",
-                fontSize: 14,
-                lineHeight: 1.8,
-              }}
-            >
-              {summary}
-            </Typography>
-          )}
-        </Box>
+        <GripHorizontal size={30} color="#6D6D6D" cursor={"grab"} />
         <Box
           sx={{
             width: "100%",
+            height: "100%",
             display: "flex",
+            flexDirection: "column",
             justifyContent: "center",
-            alignItems: "center",
+            gap: 3,
           }}
         >
-          <Button
+          <Box
+            sx={{ display: "flex", gap: 2, alignItems: "center", height: 20 }}
+          >
+            <TextQuestion size={24} color="white" />
+            <Typography
+              variant="h6"
+              sx={{
+                color: "white",
+                fontWeight: "bold",
+                margin: "0 0 0 0 !important",
+              }}
+            >
+              Explain & Rephrase
+            </Typography>
+          </Box>
+          <Box
             sx={{
-              backgroundColor: "#181E82",
-              color: "white",
-              textTransform: "none",
-              fontWeight: "bold",
-              paddingY: 1,
-              paddingX: 2,
-              width: "45%",
               display: "flex",
-              gap: 2,
+              flexGrow: 1,
             }}
           >
-            <Microscope size={20} color="white" />
-            Deep Dive
-          </Button>
+            {summary === "" ? (
+              <LoadingText />
+            ) : (
+              <Typography
+                sx={{
+                  color: "white",
+                  fontSize: 14,
+                  lineHeight: 1.8,
+                }}
+              >
+                {summary}
+              </Typography>
+            )}
+          </Box>
+          <Box
+            sx={{
+              width: "100%",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <Button
+              sx={{
+                backgroundColor: "#181E82",
+                color: "white",
+                textTransform: "none",
+                fontWeight: "bold",
+                paddingY: 1,
+                paddingX: 2,
+                width: "45%",
+                display: "flex",
+                gap: 2,
+              }}
+            >
+              <Microscope size={20} color="white" />
+              Deep Dive
+            </Button>
+          </Box>
         </Box>
       </Box>
-    </Box>
+    </AnimatePresence>
   );
 };
 

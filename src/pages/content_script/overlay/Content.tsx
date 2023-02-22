@@ -43,40 +43,49 @@ const Content = () => {
   }, [selection]);
 
   return (
-    <Box sx={{ display: "flex", gap: 1 }}>
-      {selection !== "" && openExplain && (
-        <ExplainWindow
-          selection={selection}
-          shouldLoad={openExplain && selection !== ""}
-        />
-      )}
-      <AnimatePresence>
-        <motion.div
-          id="essai-overlay-widget"
-          initial={{ x: "100%" }}
-          animate={{ x: 0, transition: { duration: 0.2 }, type: "spring" }}
-          drag
-          dragTransition={{ bounceStiffness: 600, bounceDamping: 10 }}
-          dragMomentum={false}
-          dragConstraints={{
-            top: 0,
-            left: -0.94 * width,
-            right: 0,
-            bottom: 0.7 * height,
+    <AnimatePresence>
+      <Box
+        sx={{
+          display: "flex",
+          gap: "10px",
+          flexDirection: "row",
+        }}
+        key={"overlay"}
+        component={motion.div}
+        initial={{ x: "100%" }}
+        animate={{ x: 0, transition: { duration: 0.2 }, type: "spring" }}
+        drag
+        dragTransition={{ bounceStiffness: 600, bounceDamping: 10 }}
+        dragMomentum={false}
+        dragConstraints={{
+          top: 0,
+          left: -0.94 * width,
+          right: 0,
+          bottom: 0.7 * height,
+        }}
+      >
+        <Box
+          sx={{
+            height: "175px",
+            borderRadius: "10px",
+            padding: "18px !important",
+            paddingTop: "10px !important",
+            paddingX: "15px !important",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            backgroundColor: "#080A29",
+            gap: 2,
           }}
         >
-          <GripHorizontal size={30} color="#6D6D6D" cursor={"grab"} />
+          <GripHorizontal size={25} color="#6D6D6D" cursor={"grab"} />
           <Box
             sx={{
-              padding: 1,
-              paddingTop: 2,
-              width: "100%",
-              height: "100%",
               display: "flex",
               flexDirection: "column",
               justifyContent: "space-evenly",
               alignItems: "center",
-              gap: 3,
+              gap: 2,
             }}
           >
             <FileQuestion size={24} color={"white"} cursor={"pointer"} />
@@ -88,9 +97,16 @@ const Content = () => {
               onClick={openExplanation}
             />
           </Box>
-        </motion.div>
-      </AnimatePresence>
-    </Box>
+        </Box>
+      </Box>
+      {selection !== "" && openExplain && (
+        <ExplainWindow
+          key={"explain-window"}
+          selection={selection}
+          shouldLoad={openExplain && selection !== ""}
+        />
+      )}
+    </AnimatePresence>
   );
 };
 

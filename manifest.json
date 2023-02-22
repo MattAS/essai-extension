@@ -2,20 +2,18 @@
     "manifest_version": 3,
     "name": "Ess.ai",
     "version": "0.0.1",
-    "action": { "default_popup": "index.html" },
+    "action": {
+        "default_title": "Click to show the overlay"
+    },
     "content_scripts": [
         {
             "matches": ["https://www.google.com/*"],
             "js": ["./src/pages/content_script/search/index.tsx"]
         },
-           { 
-             "matches": ["https://*/*"],
-             "js": ["./src/pages/content_script/overlay/index.tsx"],
-             "exclude_matches": [
-                "https://www.twitch.tv/*",
-                "https://www.youtube.com/*"
-            ]
-           }
+        { 
+            "matches": ["https://medium.com/*"],
+            "js": ["./src/pages/content_script/overlay/index.tsx"]
+        }
     ],
     "background": {
         "service_worker": "src/background.ts",
@@ -27,6 +25,7 @@
         "tabs",
         "scripting",
         "webRequest",
-        "storage"
-       ]
+        "storage",
+        "activeTab"
+    ]
   }
