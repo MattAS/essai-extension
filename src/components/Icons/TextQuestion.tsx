@@ -1,13 +1,6 @@
 import "./style.css";
 
-interface ITextQuestionProps {
-  size: number;
-  color: string;
-  cursor?: string;
-  onClick?: () => void;
-}
-
-const TextQuestion: React.FC<ITextQuestionProps> = ({
+const TextQuestion: React.FC<IIconProps> = ({
   size,
   color,
   cursor = "",

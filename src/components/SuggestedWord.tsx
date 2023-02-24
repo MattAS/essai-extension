@@ -1,7 +1,6 @@
-import { Box, Fade, IconButton, Typography } from "@mui/material";
-import { Globe, Maximize2, Minimize2, Search, X } from "lucide-react";
+import { Box, IconButton, Typography } from "@mui/material";
+import { Maximize2, Minimize2 } from "lucide-react";
 import React, { useEffect, useState } from "react";
-import { moreSearchResults } from "../mockData";
 import LoadingArticles from "./loading/LoadingArticles";
 import RelatedArticles from "./RelatedArticles";
 
@@ -24,28 +23,16 @@ const SuggestedWord: React.FC<ISuggestedWordProps> = ({
   setOpened,
 }) => {
   const [openArticles, setOpenArticles] = useState(false);
-  const [openSearch, setOpenSearch] = useState(false);
-
-  const searchQueries = moreSearchResults.filter(
-    (result) => result.keyword === word
-  );
 
   useEffect(() => {
     if (!opened) {
       setOpenArticles(false);
-      setOpenSearch(false);
     }
   }, [opened]);
 
   const handleOpenArticles = () => {
     setOpened();
     setOpenArticles(!openArticles);
-    setOpenSearch(false);
-  };
-  const handleOpenSearch = () => {
-    setOpened();
-    setOpenSearch(!openSearch);
-    setOpenArticles(false);
   };
   return (
     <Box
@@ -59,7 +46,7 @@ const SuggestedWord: React.FC<ISuggestedWordProps> = ({
         sx={{
           display: "flex",
           justifyContent: "space-between",
-          gap: opened && (openArticles || openSearch) ? 5 : 0,
+          gap: opened && openArticles ? 5 : 0,
         }}
       >
         <Box
@@ -67,8 +54,7 @@ const SuggestedWord: React.FC<ISuggestedWordProps> = ({
             display: "flex",
             gap: 2,
             overflow: "hidden",
-            flexDirection:
-              !opened || (!openArticles && !openSearch) ? "row" : "column",
+            flexDirection: !opened || !openArticles ? "row" : "column",
           }}
         >
           <Typography
@@ -89,7 +75,7 @@ const SuggestedWord: React.FC<ISuggestedWordProps> = ({
               "&:first-letter": {
                 textTransform: "uppercase",
               },
-              whiteSpace: "nowrap",
+              whiteSpace: !openArticles ? "nowrap" : "normal",
               textOverflow: "ellipsis",
               flexGrow: 1,
             }}
@@ -113,9 +99,6 @@ const SuggestedWord: React.FC<ISuggestedWordProps> = ({
               justifyContent: "space-between",
             }}
           >
-            <IconButton onClick={handleOpenSearch}>
-              <Search size={20} color="white" />
-            </IconButton>
             <IconButton onClick={handleOpenArticles}>
               {!openArticles ? (
                 <Maximize2 size={20} color="white" />
@@ -123,63 +106,9 @@ const SuggestedWord: React.FC<ISuggestedWordProps> = ({
                 <Minimize2 size={20} color="white" />
               )}
             </IconButton>
-            <X size={24} color="white" />
           </Box>
         </Box>
       </Box>
-      {opened && openSearch && (
-        <Box
-          sx={{
-            display: "flex",
-            gap: 2,
-            flexDirection: "column",
-            marginTop: 5,
-          }}
-        >
-          <Typography
-            sx={{
-              color: "white",
-              textTransform: "uppercase",
-              fontWeight: "bold",
-              fontSize: 12,
-            }}
-          >
-            Enhanced Search Queries
-          </Typography>
-          <Box
-            flexWrap={"wrap"}
-            sx={{
-              display: "flex",
-              flexDirection: "row",
-              gap: 2,
-              justifyContent: "space-between",
-            }}
-          >
-            {searchQueries[0].queries.map((query) => (
-              <Box
-                sx={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  width: "100%",
-                }}
-              >
-                <Typography>{query}</Typography>
-                <IconButton
-                  onClick={() => {
-                    window.open(
-                      `https://www.google.com/search?q=${query}`,
-                      "_blank"
-                    );
-                  }}
-                >
-                  <Globe size={20} color="white" />
-                </IconButton>
-              </Box>
-            ))}
-          </Box>
-        </Box>
-      )}
       {opened && openArticles && (
         <Box
           sx={{

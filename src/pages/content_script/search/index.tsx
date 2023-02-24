@@ -21,14 +21,6 @@ voiceElement.before(root);
 const image = document.querySelector('[aria-label="Search by image"]');
 image?.setAttribute("style", "width: unset !important;");
 
-const input =
-  (document.querySelector('[aria-label="Search"]') as HTMLInputElement) ||
-  (document
-    .getElementsByClassName("a4bIc")[0]
-    .querySelector('[aria-label="Google Search"]') as HTMLInputElement);
-
-console.log(input.value);
-
 ReactDOM.createRoot(root as HTMLElement).render(
   <React.StrictMode>
     <ThemeProvider theme={theme}>

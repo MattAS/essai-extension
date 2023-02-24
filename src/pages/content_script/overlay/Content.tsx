@@ -1,8 +1,6 @@
 import { Box, Typography } from "@mui/material";
 import { AnimatePresence, motion } from "framer-motion";
 import {
-  ChevronDown,
-  ChevronUp,
   FileQuestion,
   GripHorizontal,
   Microscope,
@@ -66,7 +64,7 @@ const Content = () => {
       >
         <Box
           sx={{
-            height: "175px",
+            height: "145px",
             borderRadius: "10px",
             padding: "18px !important",
             paddingTop: "10px !important",

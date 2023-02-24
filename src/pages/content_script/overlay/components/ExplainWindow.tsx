@@ -4,9 +4,8 @@ import { AnimatePresence, motion } from "framer-motion";
 import { GripHorizontal, Microscope } from "lucide-react";
 import { useEffect, useState } from "react";
 import TextQuestion from "../../../../components/Icons/TextQuestion";
-import { readSummaryCache, writeSummaryCache } from "../../../../utils/cache";
+import { writeSummaryCache } from "../../../../utils/cache";
 import LoadingText from "../../../../components/loading/LoadingText";
-
 interface IExplainWindowProps {
   selection: string;
   shouldLoad: boolean;

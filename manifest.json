@@ -11,8 +11,9 @@
             "js": ["./src/pages/content_script/search/index.tsx"]
         },
         { 
-            "matches": ["https://medium.com/*"],
-            "js": ["./src/pages/content_script/overlay/index.tsx"]
+            "matches": ["https://*/*"],
+            "js": ["./src/pages/content_script/overlay/index.tsx"],
+            "exclude_globs": ["https://www.twitch.tv/*", "https://www.youtube.com/*", "https://*.hbomax.com/*", "https://*.disneyplus.com/*", "https://*.hulu.com/*", "https://*.netflix.com/*"]
         }
     ],
     "background": {

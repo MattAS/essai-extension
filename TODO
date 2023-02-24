@@ -1,4 +1,5 @@
 Features:
+    ☐ Max height for explain window with scrollable text
     ✔ Create highlight and explain feature @done(23-02-21 15:37)
     ☐ Display already filtered keywords as they are produced (show autobiographical memory have a loading box below the card and load next cards as we go)
     ✔ Summarize the article @done(23-02-21 15:38)
