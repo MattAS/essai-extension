@@ -1,10 +1,6 @@
 import { Box, Typography } from "@mui/material";
 import { AnimatePresence, motion } from "framer-motion";
-import {
-  FileQuestion,
-  GripHorizontal,
-  Microscope,
-} from "lucide-react";
+import { FileQuestion, GripHorizontal, Microscope } from "lucide-react";
 import { useEffect, useState } from "react";
 import TextQuestion from "../../../components/Icons/TextQuestion";
 import ExplainWindow from "./components/ExplainWindow";
@@ -64,7 +60,7 @@ const Content = () => {
       >
         <Box
           sx={{
-            height: "145px",
+            height: "min(165px, fit-content)",
             borderRadius: "10px",
             padding: "18px !important",
             paddingTop: "10px !important",

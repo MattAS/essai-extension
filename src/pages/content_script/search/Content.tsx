@@ -1,5 +1,6 @@
 import { Box, Fade, Modal, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
+import NobelLogo from "../../../components/Icons/NobelLogo";
 import ModalContent from "./components/ModalContent";
 import "./style.css";
 
@@ -29,7 +30,9 @@ const Content = () => {
   };
   return (
     <div>
-      <div id="essai-widget" onClick={handleOpen} />
+      <div id="essai-widget" onClick={handleOpen}>
+        <NobelLogo size={24} />
+      </div>
       <Modal
         open={opened}
         onClose={handleClose}
