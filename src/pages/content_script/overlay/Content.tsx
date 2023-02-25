@@ -53,7 +53,6 @@ const Content = () => {
   return (
     <AnimatePresence>
       <Box
-        ref={wrapperRef}
         sx={{
           display: "flex",
           gap: "10px",
@@ -114,7 +113,7 @@ const Content = () => {
         </Box>
       </Box>
       {isOpenWindow !== "" && (
-        <ShowWindow name={isOpenWindow} value={selection} />
+        <ShowWindow name={isOpenWindow} value={selection} ref={wrapperRef} />
       )}
     </AnimatePresence>
   );

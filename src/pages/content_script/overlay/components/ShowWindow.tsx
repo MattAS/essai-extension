@@ -7,14 +7,18 @@ interface IShowWindowProps {
   value: string;
 }
 
-const ShowWindow: React.FC<IShowWindowProps> = ({ name, value }) => {
-  if (name === "summarize") {
-    return <SummarizeWindow />;
-  } else if (name === "highlight") {
-    return <ExplainWindow selection={value} />;
-  } else {
-    return <></>;
+type Ref = HTMLDivElement;
+
+const ShowWindow = React.forwardRef<Ref, IShowWindowProps>(
+  ({ name, value }, ref) => {
+    if (name === "summarize") {
+      return <SummarizeWindow ref={ref} />;
+    } else if (name === "highlight") {
+      return <ExplainWindow selection={value} ref={ref} />;
+    } else {
+      return <></>;
+    }
   }
-};
+);
 
 export default ShowWindow;
