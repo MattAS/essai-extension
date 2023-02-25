@@ -1,12 +1,14 @@
 import { Box, Input, Typography } from "@mui/material";
-import React from "react";
+import React, { useEffect } from "react";
 import SuggestedWord from "../../../../components/SuggestedWord";
 import axios from "axios";
 import LoadingText from "../../../../components/loading/LoadingText";
 import * as emptyModalAnimation from "../../../../assets/emptyModal.json";
 import Lottie from "lottie-react";
 import EnhancedSearch from "../../../../components/Icons/EnhancedSearch";
-import { writeToCache } from "../../../../utils/cache";
+import { readCache, writeToCache } from "../../../../utils/cache";
+import History from "./History";
+import { BookOpen } from "lucide-react";
 
 interface IModalContentProps {
   inputValue: string;
@@ -17,6 +19,18 @@ const ModalContent: React.FC<IModalContentProps> = ({ inputValue }) => {
   const [input, setInput] = React.useState<string>(inputValue);
   const [suggested, setSuggested] = React.useState<any>();
   const [loading, setIsLoading] = React.useState<boolean>(false);
+  const [history, setHistory] = React.useState<any>([]);
+
+  useEffect(() => {
+    const getCache = async () => {
+      const cache = await readCache("nobel-history");
+      console.log(cache);
+      if (cache["nobel-history"]) {
+        setHistory(cache["nobel-history"]);
+      }
+    };
+    getCache();
+  }, []);
 
   const onEnter = (e: React.KeyboardEvent) => {
     const getContent = async () => {
@@ -54,6 +68,11 @@ const ModalContent: React.FC<IModalContentProps> = ({ inputValue }) => {
       });
       setSuggested(newSuggestion);
       writeToCache("nobel-question", newSuggestion);
+      const toCache = {
+        question: input,
+        response: newSuggestion,
+      };
+      writeToCache("nobel-history", [...history, toCache]);
     };
     if (e.key === "Enter") {
       setIsLoading(true);
@@ -63,6 +82,11 @@ const ModalContent: React.FC<IModalContentProps> = ({ inputValue }) => {
 
   const handleOpen = (idx: number) => {
     setOpenedIdx(idx);
+  };
+
+  const setSuggestion = (suggestion: any, question: string) => {
+    setSuggested(suggestion);
+    setInput(question);
   };
 
   return (
@@ -127,7 +151,7 @@ const ModalContent: React.FC<IModalContentProps> = ({ inputValue }) => {
       </Box>
       <Box
         sx={{
-          width: "95%",
+          width: "100%",
           gap: 4,
           display: "flex",
           flexDirection: "column",
@@ -139,7 +163,14 @@ const ModalContent: React.FC<IModalContentProps> = ({ inputValue }) => {
       >
         {loading && <LoadingText />}
         {!loading && suggested && (
-          <>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              paddingX: 2,
+              gap: 4,
+            }}
+          >
             <Typography
               sx={{
                 color: "white",
@@ -160,9 +191,45 @@ const ModalContent: React.FC<IModalContentProps> = ({ inputValue }) => {
                 links={suggestion.papers}
               />
             ))}
-          </>
+          </Box>
         )}
-        {!suggested && !loading && (
+        {!suggested && !loading && Object.values(history).length > 0 ? (
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              gap: 2,
+            }}
+          >
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                gap: 2,
+                marginLeft: 2,
+              }}
+            >
+              <BookOpen color="white" size={25} />
+              <Typography
+                sx={{
+                  color: "white",
+                  fontWeight: "bold",
+                }}
+              >
+                History
+              </Typography>
+            </Box>
+            {Object.values(history).map((hist: any, index: number) => {
+              console.log(hist);
+              return (
+                <History
+                  question={hist.question}
+                  onClick={() => setSuggestion(hist.response, hist.question)}
+                />
+              );
+            })}
+          </Box>
+        ) : !suggested && !loading && history.length === 0 ? (
           <Box
             sx={{
               width: "100%",
@@ -188,7 +255,7 @@ const ModalContent: React.FC<IModalContentProps> = ({ inputValue }) => {
               Begin your guided research journey!
             </Typography>
           </Box>
-        )}
+        ) : null}
       </Box>
     </Box>
   );

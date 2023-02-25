@@ -9,18 +9,22 @@ interface ISummary {
 }
 
 interface IQuestionCache {
+  keyword: string
+  papers: any[]
+  definition: string
+  searchQueries: any[]
   question: string
-  papers?: any[]
-  keywords: string[]
 }
 
 const writeToCache = (
   key: string,
-  value: IQuestionCache | ISummary | IHighlight,
+  value: IQuestionCache | ISummary | IHighlight | any,
 ) => {
+  console.log(value)
   const cache = {
     ...value,
   }
+  console.log(cache)
   chrome.storage.local.set({ [key]: cache }, () => {
     console.log('Summary cache written')
   })

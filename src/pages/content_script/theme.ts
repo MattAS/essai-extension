@@ -5,12 +5,13 @@ const theme = createTheme({
     MuiTooltip: {
       defaultProps: {
         arrow: true,
-        placement: 'left-end',
+        placement: 'left',
       },
       styleOverrides: {
         tooltip: {
           backgroundColor: '#080A29',
           marginRight: '25px!important',
+          marginLeft: '25px!important',
           fontSize: '14px',
           fontFamily: 'Inter, sans-serif',
           borderRadius: '8px',
