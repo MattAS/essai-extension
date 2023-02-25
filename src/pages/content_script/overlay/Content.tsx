@@ -57,6 +57,7 @@ const Content = () => {
           display: "flex",
           gap: "10px",
           flexDirection: "row",
+          height: "175px!important",
         }}
         key={"overlay"}
         component={motion.div}
@@ -74,7 +75,6 @@ const Content = () => {
       >
         <Box
           sx={{
-            height: "175px",
             borderRadius: "10px",
             padding: "18px !important",
             paddingTop: "10px !important",
