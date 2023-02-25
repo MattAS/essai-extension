@@ -24,9 +24,8 @@ const ModalContent: React.FC<IModalContentProps> = ({ inputValue }) => {
   useEffect(() => {
     const getCache = async () => {
       const cache = await readCache("nobel-history");
-      console.log(cache);
       if (cache["nobel-history"]) {
-        setHistory(cache["nobel-history"]);
+        setHistory(Object.values(cache["nobel-history"]));
       }
     };
     getCache();
@@ -73,6 +72,7 @@ const ModalContent: React.FC<IModalContentProps> = ({ inputValue }) => {
         response: newSuggestion,
       };
       writeToCache("nobel-history", [...history, toCache]);
+      setHistory([...history, toCache]);
     };
     if (e.key === "Enter") {
       setIsLoading(true);
@@ -219,15 +219,29 @@ const ModalContent: React.FC<IModalContentProps> = ({ inputValue }) => {
                 History
               </Typography>
             </Box>
-            {Object.values(history).map((hist: any, index: number) => {
-              console.log(hist);
-              return (
-                <History
-                  question={hist.question}
-                  onClick={() => setSuggestion(hist.response, hist.question)}
-                />
-              );
-            })}
+            <Box
+              sx={{
+                overflow: "scroll",
+                "::-webkit-scrollbar": {
+                  display: "none",
+                },
+                msOverflowStyle: "none",
+                scrollbarWidth: "none",
+                display: "flex",
+                flexDirection: "column",
+                gap: 2,
+              }}
+            >
+              {history.map((hist: any, index: number) => {
+                return (
+                  <History
+                    key={`history-${index}`}
+                    question={hist.question}
+                    onClick={() => setSuggestion(hist.response, hist.question)}
+                  />
+                );
+              })}
+            </Box>
           </Box>
         ) : !suggested && !loading && history.length === 0 ? (
           <Box
