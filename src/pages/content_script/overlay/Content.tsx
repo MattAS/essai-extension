@@ -1,4 +1,4 @@
-import { Box } from "@mui/material";
+import { Box, Grow, Tooltip, Zoom } from "@mui/material";
 import { AnimatePresence, motion } from "framer-motion";
 import { FileQuestion, GripHorizontal, Microscope } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
@@ -96,19 +96,47 @@ const Content = () => {
               gap: 2,
             }}
           >
-            <FileQuestion
-              size={24}
-              color={"white"}
-              cursor={"pointer"}
-              onClick={() => setIsOpenWindow("summarize")}
-            />
-            <Microscope size={24} color={"white"} cursor={"pointer"} />
-            <TextQuestion
-              size={24}
-              color={selection === "" ? "#6D6D6D" : "white"}
-              cursor={"pointer"}
-              onClick={() => setIsOpenWindow("highlight")}
-            />
+            <Tooltip
+              title="Summarize Page"
+              placement="left"
+              arrow
+              TransitionComponent={Grow}
+              sx={{
+                "& .MuiTooltip-popper": {
+                  backgroundColor: "#080A29",
+                },
+              }}
+            >
+              <FileQuestion
+                size={24}
+                color={"white"}
+                cursor={"pointer"}
+                onClick={() => setIsOpenWindow("summarize")}
+              />
+            </Tooltip>
+            <Tooltip
+              title="Deep Dive"
+              placement="left"
+              arrow
+              TransitionComponent={Grow}
+            >
+              <Microscope size={24} color={"white"} cursor={"pointer"} />
+            </Tooltip>
+            <Tooltip
+              title="Explain selection"
+              placement="left"
+              arrow
+              TransitionComponent={Grow}
+            >
+              <span>
+                <TextQuestion
+                  size={24}
+                  color={selection === "" ? "#6D6D6D" : "white"}
+                  cursor={"pointer"}
+                  onClick={() => setIsOpenWindow("highlight")}
+                />
+              </span>
+            </Tooltip>
           </Box>
         </Box>
       </Box>
