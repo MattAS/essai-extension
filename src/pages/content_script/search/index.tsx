@@ -6,7 +6,7 @@ import { ThemeProvider } from "@mui/material";
 import theme from "../theme";
 
 const root = document.createElement("div");
-root.id = "essai-root";
+root.id = "nobel-root";
 
 const voiceElement =
   document.querySelector('[aria-label="Search by voice"]') ||

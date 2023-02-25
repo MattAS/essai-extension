@@ -1,4 +1,4 @@
-#essai-root {
+#nobel-root {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -6,7 +6,7 @@
     margin: 0 8px;
   }
 
-#essai-widget {
+#nobel-widget {
     width: 24px;
     height: 24px;
     border-radius: 100px;

@@ -1,10 +1,11 @@
-interface ISummary {
+interface IHighlight {
   selection: string
   response: string
 }
 
-interface IReadSummary {
-  selection: string
+interface ISummary {
+  url: string
+  response: string
 }
 
 interface IQuestionCache {
@@ -13,50 +14,24 @@ interface IQuestionCache {
   keywords: string[]
 }
 
-const writeQuestionCache = (question: IQuestionCache) => {
-  const questionCache = {
-    ...question,
+const writeToCache = (
+  key: string,
+  value: IQuestionCache | ISummary | IHighlight,
+) => {
+  const cache = {
+    ...value,
   }
-  chrome.storage.local.set({ 'essai-question': questionCache }, () => {
-    console.log('Question cache written')
-  })
-}
-
-const readQuestionCache = ({ question }: IQuestionCache): string | null => {
-  let cacheResult = null
-  chrome.storage.local.get(['essai-question'], (result) => {
-    if (result.question && result.question === question) {
-      cacheResult = result
-    }
-  })
-
-  return cacheResult
-}
-
-const writeSummaryCache = (summary: ISummary) => {
-  const summaryCache = {
-    ...summary,
-  }
-  chrome.storage.local.set({ 'essai-summary': summaryCache }, () => {
+  chrome.storage.local.set({ [key]: cache }, () => {
     console.log('Summary cache written')
   })
 }
 
-const readSummaryCache = ({ selection }: IReadSummary): string | null => {
-  let cacheResult = null
-  chrome.storage.local.get(['essai-summary'], (result) => {
-    console.log(result)
-    if (result.response && result.response.selection === selection) {
-      cacheResult = result.response
-    }
-  })
-
-  return cacheResult
+const readCache = (
+  key: string,
+): Promise<{
+  [key: string]: any
+}> => {
+  return chrome.storage.local.get([key])
 }
 
-export {
-  writeSummaryCache,
-  readSummaryCache,
-  writeQuestionCache,
-  readQuestionCache,
-}
+export { writeToCache, readCache }

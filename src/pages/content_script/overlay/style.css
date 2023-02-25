@@ -1,4 +1,4 @@
-#essai-overlay-root {
+#nobel-overlay-root {
     position: fixed;
     display: flex;
     flex-direction: row-reverse;
@@ -8,12 +8,6 @@
     width: 1px;
     gap: 10px;
   }
-
-#essai-overlay-widget {
-    display: flex;
-    gap: 10px;
-    flex-direction: row;
-}
 
 * {
   -webkit-font-smoothing: antialiased;

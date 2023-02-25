@@ -2,11 +2,11 @@ import { Box, Input, Typography } from "@mui/material";
 import React from "react";
 import SuggestedWord from "../../../../components/SuggestedWord";
 import axios from "axios";
-import { writeQuestionCache } from "../../../../utils/cache";
 import LoadingText from "../../../../components/loading/LoadingText";
 import * as emptyModalAnimation from "../../../../assets/emptyModal.json";
 import Lottie from "lottie-react";
 import EnhancedSearch from "../../../../components/Icons/EnhancedSearch";
+import { writeToCache } from "../../../../utils/cache";
 
 interface IModalContentProps {
   inputValue: string;
@@ -53,7 +53,7 @@ const ModalContent: React.FC<IModalContentProps> = ({ inputValue }) => {
         };
       });
       setSuggested(newSuggestion);
-      writeQuestionCache(newSuggestion);
+      writeToCache("nobel-question", newSuggestion);
     };
     if (e.key === "Enter") {
       setIsLoading(true);

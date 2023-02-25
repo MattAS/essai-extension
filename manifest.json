@@ -1,6 +1,6 @@
 {
     "manifest_version": 3,
-    "name": "Ess.ai",
+    "name": "Nobel",
     "version": "0.0.1",
     "action": {
         "default_title": "Click to show the overlay"

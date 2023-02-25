@@ -1,15 +1,17 @@
-import { Box, Typography } from "@mui/material";
+import { Box } from "@mui/material";
 import { AnimatePresence, motion } from "framer-motion";
 import { FileQuestion, GripHorizontal, Microscope } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import TextQuestion from "../../../components/Icons/TextQuestion";
-import ExplainWindow from "./components/ExplainWindow";
+import ShowWindow from "./components/ShowWindow";
 
 const Content = () => {
   const height = window.innerHeight;
   const width = window.innerWidth;
   const [selection, setSelection] = useState("");
-  const [openExplain, setOpenExplain] = useState(false);
+  const [isOpenWindow, setIsOpenWindow] = useState<
+    "summarize" | "highlight" | ""
+  >("");
 
   useEffect(() => {
     document.addEventListener("selectionchange", (event) => {
@@ -20,25 +22,38 @@ const Content = () => {
     };
   });
 
-  const openExplanation = () => {
-    console.log(openExplain);
-    if (selection === "") {
-      setOpenExplain(false);
-      return;
-    }
-    setOpenExplain(!openExplain);
-  };
-
   useEffect(() => {
-    if (selection === "") {
-      setOpenExplain(false);
-      return;
+    if (selection === "" && isOpenWindow === "highlight") {
+      setIsOpenWindow("");
     }
-  }, [selection]);
+  }, [selection, isOpenWindow]);
+
+  const wrapperRef = useRef(null);
+  useOutsideAlerter(wrapperRef);
+
+  function useOutsideAlerter(ref: any) {
+    useEffect(() => {
+      /**
+       * Alert if clicked on outside of element
+       */
+      function handleClickOutside(event: any) {
+        if (ref.current && !ref.current.contains(event.target)) {
+          setIsOpenWindow("");
+        }
+      }
+      // Bind the event listener
+      document.addEventListener("mousedown", handleClickOutside);
+      return () => {
+        // Unbind the event listener on clean up
+        document.removeEventListener("mousedown", handleClickOutside);
+      };
+    }, [ref]);
+  }
 
   return (
     <AnimatePresence>
       <Box
+        ref={wrapperRef}
         sx={{
           display: "flex",
           gap: "10px",
@@ -60,7 +75,7 @@ const Content = () => {
       >
         <Box
           sx={{
-            height: "min(165px, fit-content)",
+            height: "175px",
             borderRadius: "10px",
             padding: "18px !important",
             paddingTop: "10px !important",
@@ -82,23 +97,24 @@ const Content = () => {
               gap: 2,
             }}
           >
-            <FileQuestion size={24} color={"white"} cursor={"pointer"} />
+            <FileQuestion
+              size={24}
+              color={"white"}
+              cursor={"pointer"}
+              onClick={() => setIsOpenWindow("summarize")}
+            />
             <Microscope size={24} color={"white"} cursor={"pointer"} />
             <TextQuestion
               size={24}
               color={selection === "" ? "#6D6D6D" : "white"}
               cursor={"pointer"}
-              onClick={openExplanation}
+              onClick={() => setIsOpenWindow("highlight")}
             />
           </Box>
         </Box>
       </Box>
-      {selection !== "" && openExplain && (
-        <ExplainWindow
-          key={"explain-window"}
-          selection={selection}
-          shouldLoad={openExplain && selection !== ""}
-        />
+      {isOpenWindow !== "" && (
+        <ShowWindow name={isOpenWindow} value={selection} />
       )}
     </AnimatePresence>
   );

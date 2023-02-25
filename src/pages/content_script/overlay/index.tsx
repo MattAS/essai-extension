@@ -6,7 +6,7 @@ import { ThemeProvider } from "@mui/material";
 import theme from "../theme";
 
 const root = document.createElement("div");
-root.id = "essai-overlay-root";
+root.id = "nobel-overlay-root";
 document.body.append(root);
 
 ReactDOM.createRoot(root as HTMLElement).render(

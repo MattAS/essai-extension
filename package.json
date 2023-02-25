@@ -20,7 +20,9 @@
     "lottie-react": "^2.4.0",
     "lucide-react": "^0.108.0",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-shadow": "^20.0.0",
+    "style-loader": "^3.3.1"
   },
   "devDependencies": {
     "@crxjs/vite-plugin": "^2.0.0-beta.12",

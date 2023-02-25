@@ -14,12 +14,9 @@ const Content = () => {
         .getElementsByClassName("a4bIc")[0]
         .querySelector('[aria-label="Google Search"]') as HTMLInputElement);
 
-    console.log(input.value);
-
     if (input && opened) {
       setInputValue(input.value);
     }
-    console.log(input.value);
   }, [opened]);
   const handleOpen = () => {
     setOpened(true);
@@ -30,7 +27,7 @@ const Content = () => {
   };
   return (
     <div>
-      <div id="essai-widget" onClick={handleOpen}>
+      <div id="nobel-widget" onClick={handleOpen}>
         <NobelLogo size={24} />
       </div>
       <Modal
