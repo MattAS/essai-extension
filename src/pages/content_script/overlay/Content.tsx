@@ -87,7 +87,14 @@ const Content = () => {
             gap: 2,
           }}
         >
-          <GripHorizontal size={25} color="#6D6D6D" cursor={"grab"} />
+          <Box
+            sx={{
+              height: "10px",
+              marginBottom: 1,
+            }}
+          >
+            <GripHorizontal size={24} color="#6D6D6D" cursor={"grab"} />
+          </Box>
           <Box
             sx={{
               display: "flex",
