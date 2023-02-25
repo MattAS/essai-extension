@@ -2,6 +2,7 @@ import { Box, Grow, Tooltip, Zoom } from "@mui/material";
 import { AnimatePresence, motion } from "framer-motion";
 import { FileQuestion, GripHorizontal, Microscope } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import EnhancedSearch from "../../../components/Icons/EnhancedSearch";
 import TextQuestion from "../../../components/Icons/TextQuestion";
 import ShowWindow from "./components/ShowWindow";
 
@@ -57,7 +58,7 @@ const Content = () => {
           display: "flex",
           gap: "10px",
           flexDirection: "row",
-          height: "175px!important",
+          height: "210px!important",
         }}
         key={"overlay"}
         component={motion.div}
@@ -70,7 +71,7 @@ const Content = () => {
           top: 0,
           left: -0.94 * width,
           right: 0,
-          bottom: 0.7 * height,
+          bottom: 0.78 * height,
         }}
       >
         <Box
@@ -96,6 +97,16 @@ const Content = () => {
               gap: 2,
             }}
           >
+            <Tooltip
+              title="Search"
+              placement="left"
+              arrow
+              TransitionComponent={Grow}
+            >
+              <span>
+                <EnhancedSearch color="white" size={25} cursor="pointer" />
+              </span>
+            </Tooltip>
             <Tooltip
               title="Summarize Page"
               placement="left"
@@ -123,7 +134,7 @@ const Content = () => {
               <Microscope size={24} color={"white"} cursor={"pointer"} />
             </Tooltip>
             <Tooltip
-              title="Explain selection"
+              title="Explain Selection"
               placement="left"
               arrow
               TransitionComponent={Grow}

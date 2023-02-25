@@ -54,7 +54,7 @@ const ExplainWindow = React.forwardRef<Ref, IExplainWindowProps>(
       return (
         <Button
           sx={{
-            backgroundColor: "#181E82",
+            backgroundColor: "#624EE1",
             color: "white",
             textTransform: "none",
             fontWeight: "bold",

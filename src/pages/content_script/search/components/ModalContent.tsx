@@ -140,10 +140,13 @@ const ModalContent: React.FC<IModalContentProps> = ({ inputValue }) => {
             display: "flex",
             alignItems: "center",
             justifyContent: "space-between",
-            gap: 1,
+            gap: 2,
+            "::placeholder": {
+              color: "#9295BE",
+            },
           }}
           startAdornment={<EnhancedSearch color="white" size={25} />}
-          placeholder="Type your question or topic..."
+          placeholder="Type your question or topic to enhance"
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyPress={onEnter}
@@ -209,7 +212,7 @@ const ModalContent: React.FC<IModalContentProps> = ({ inputValue }) => {
                 marginLeft: 2,
               }}
             >
-              <BookOpen color="white" size={25} />
+              <BookOpen fill="white" size={28} color="#080A29" />
               <Typography
                 sx={{
                   color: "white",
