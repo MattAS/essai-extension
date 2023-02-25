@@ -63,6 +63,9 @@ const ExplainWindow = React.forwardRef<Ref, IExplainWindowProps>(
             width: "45%",
             display: "flex",
             gap: 2,
+            "&:hover": {
+              backgroundColor: "#624EE1",
+            },
           }}
         >
           <Microscope size={20} color="white" />

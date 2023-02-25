@@ -1,5 +1,5 @@
 import { Box, IconButton, Typography } from "@mui/material";
-import { Maximize2, Minimize2 } from "lucide-react";
+import { Globe, Maximize2, Minimize2 } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import LoadingArticles from "./loading/LoadingArticles";
 import RelatedArticles from "./RelatedArticles";
@@ -34,6 +34,11 @@ const SuggestedWord: React.FC<ISuggestedWordProps> = ({
     setOpened();
     setOpenArticles(!openArticles);
   };
+
+  const handleGoogleSearch = () => {
+    window.open(`https://www.google.com/search?q=${word}`, "_blank");
+  };
+
   return (
     <Box
       sx={{
@@ -46,6 +51,7 @@ const SuggestedWord: React.FC<ISuggestedWordProps> = ({
         sx={{
           display: "flex",
           justifyContent: "space-between",
+          alignItems: !openArticles ? "center" : "flex-start",
           gap: opened && openArticles ? 5 : 0,
         }}
       >
@@ -94,11 +100,14 @@ const SuggestedWord: React.FC<ISuggestedWordProps> = ({
           <Box
             sx={{
               display: "flex",
-              gap: 2,
+              gap: 1,
               alignItems: "center",
               justifyContent: "space-between",
             }}
           >
+            <IconButton onClick={handleGoogleSearch}>
+              <Globe size={20} color="white" />
+            </IconButton>
             <IconButton onClick={handleOpenArticles}>
               {!openArticles ? (
                 <Maximize2 size={20} color="white" />

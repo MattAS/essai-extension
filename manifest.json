@@ -3,7 +3,7 @@
     "name": "Nobel",
     "version": "0.0.1",
     "action": {
-        "default_title": "Click to show the overlay"
+        "default_title": "Nobel Research Assistant"
     },
     "content_scripts": [
         {
@@ -12,8 +12,7 @@
         },
         { 
             "matches": ["https://*/*"],
-            "js": ["./src/pages/content_script/overlay/index.tsx"],
-            "exclude_globs": ["https://www.twitch.tv/*", "https://www.youtube.com/*", "https://*.hbomax.com/*", "https://*.disneyplus.com/*", "https://*.hulu.com/*", "https://*.netflix.com/*"]
+            "js": ["./src/pages/content_script/overlay/index.tsx"]
         }
     ],
     "background": {
@@ -22,10 +21,7 @@
     },
     "permissions": [
         "contextMenus",
-        "notifications",
         "tabs",
-        "scripting",
-        "webRequest",
         "storage",
         "activeTab"
     ],

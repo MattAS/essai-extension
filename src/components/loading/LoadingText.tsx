@@ -3,7 +3,7 @@ import React from "react";
 
 const LoadingText = () => {
   return (
-    <Box sx={{ width: "100%", height: "100%" }}>
+    <Box sx={{ width: "100%", height: "100%", paddingX: 2 }}>
       {
         // Map over the array of 10 items to render 10 skeletons with variant text
         Array.from(Array(10).keys()).map((i) => (

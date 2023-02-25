@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import NobelLogo from "../../../components/Icons/NobelLogo";
 import NobelLogoSquare from "../../../components/Icons/NobelLogoSquare";
 import ModalContent from "./components/ModalContent";
+import SearchModal from "./components/SearchModal";
 import "./style.css";
 
 const Content = () => {
@@ -32,23 +33,11 @@ const Content = () => {
       <div id="nobel-widget" onClick={handleOpen}>
         <NobelLogoSquare size={24} />
       </div>
-      <Modal
-        open={opened}
-        onClose={handleClose}
-        closeAfterTransition
-        sx={{
-          "& .MuiBackdrop-root": {
-            backgroundColor: "rgba(8, 10, 41, 0.70)",
-            backdropFilter: "blur(5px)",
-          },
-        }}
-      >
-        <Fade in={opened}>
-          <div>
-            <ModalContent inputValue={inputValue} />
-          </div>
-        </Fade>
-      </Modal>
+      <SearchModal
+        opened={opened}
+        handleClose={handleClose}
+        inputValue={inputValue}
+      />
     </div>
   );
 };

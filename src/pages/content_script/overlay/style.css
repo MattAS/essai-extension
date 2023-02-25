@@ -1,4 +1,4 @@
-#nobel-overlay-root {
+  #nobel-host {
     position: fixed;
     display: flex;
     flex-direction: row-reverse;

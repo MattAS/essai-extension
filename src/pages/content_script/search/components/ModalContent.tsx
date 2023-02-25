@@ -1,4 +1,4 @@
-import { Box, Input, Typography } from "@mui/material";
+import { Box, IconButton, Input, Typography } from "@mui/material";
 import React, { useEffect } from "react";
 import SuggestedWord from "../../../../components/SuggestedWord";
 import axios from "axios";
@@ -8,7 +8,7 @@ import Lottie from "lottie-react";
 import EnhancedSearch from "../../../../components/Icons/EnhancedSearch";
 import { readCache, writeToCache } from "../../../../utils/cache";
 import History from "./History";
-import { BookOpen } from "lucide-react";
+import { ArrowRight, BookOpen } from "lucide-react";
 
 interface IModalContentProps {
   inputValue: string;
@@ -31,52 +31,79 @@ const ModalContent: React.FC<IModalContentProps> = ({ inputValue }) => {
     getCache();
   }, []);
 
-  const onEnter = (e: React.KeyboardEvent) => {
-    const getContent = async () => {
-      const res = await axios.post(
-        "https://essai-go-api-le4jqewulq-ue.a.run.app/api/keyword/by/question",
-        {
-          question: input,
-        }
-      );
-      const suggestion = await res.data.result.map((keywords: any) => {
-        return {
-          keyword: keywords.keyword,
-          papers: [],
-          definition: keywords.definition,
-          searchQueries: [],
-        };
-      });
-      setSuggested(suggestion);
-      setIsLoading(false);
-      const keywords = res.data.result.map((keywords: any) => {
-        return keywords.keyword;
-      });
-      const paperRes = await axios.post(
-        "https://essai-go-api-le4jqewulq-ue.a.run.app/api/paper/by/keyword/batch",
-        {
-          keywords: keywords,
-          searchForMoreKeywords: false,
-        }
-      );
-      const newSuggestion = suggestion.map((suggestion: any, idx: number) => {
-        return {
-          ...suggestion,
-          papers: paperRes.data[idx].papers,
-        };
-      });
-      setSuggested(newSuggestion);
-      writeToCache("nobel-question", newSuggestion);
-      const toCache = {
+  const getContent = async () => {
+    const res = await axios.post(
+      "https://essai-go-api-le4jqewulq-ue.a.run.app/api/keyword/by/question",
+      {
         question: input,
-        response: newSuggestion,
+      }
+    );
+    const suggestion = await res.data.result.map((keywords: any) => {
+      return {
+        keyword: keywords.keyword,
+        papers: [],
+        definition: keywords.definition,
+        searchQueries: [],
       };
-      writeToCache("nobel-history", [...history, toCache]);
-      setHistory([...history, toCache]);
+    });
+    setSuggested(suggestion);
+    setIsLoading(false);
+    const keywords = res.data.result.map((keywords: any) => {
+      return keywords.keyword;
+    });
+    const paperRes = await axios.post(
+      "https://essai-go-api-le4jqewulq-ue.a.run.app/api/paper/by/keyword/batch",
+      {
+        keywords: keywords,
+        searchForMoreKeywords: false,
+      }
+    );
+    const newSuggestion = suggestion.map((suggestion: any, idx: number) => {
+      return {
+        ...suggestion,
+        papers: paperRes.data[idx].papers,
+      };
+    });
+    setSuggested(newSuggestion);
+    writeToCache("nobel-question", newSuggestion);
+    const toCache = {
+      question: input,
+      response: newSuggestion,
     };
-    if (e.key === "Enter") {
+    writeToCache("nobel-history", [toCache, ...history]);
+    setHistory([toCache, ...history]);
+  };
+
+  const fulfillRequest = () => {
+    if (input.trim() !== "") {
       setIsLoading(true);
-      getContent();
+
+      //Find the question in the history
+      const found = history.find(
+        (item: any) =>
+          item.question.trim().toLowerCase() === input.trim().toLowerCase()
+      );
+      if (found) {
+        setSuggested(found.response);
+
+        // Bump the question to the top of the history
+        const newHistory = history.filter(
+          (item: any) => item.question !== input
+        );
+        setHistory([found, ...newHistory]);
+        writeToCache("nobel-history", [found, ...newHistory]);
+
+        setIsLoading(false);
+        return;
+      } else {
+        getContent();
+      }
+    }
+  };
+
+  const onEnter = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter" && input.trim() !== "") {
+      fulfillRequest();
     }
   };
 
@@ -95,9 +122,6 @@ const ModalContent: React.FC<IModalContentProps> = ({ inputValue }) => {
         width: "50vw",
         height: "60vh",
         backgroundColor: "#080A29",
-        position: "absolute",
-        top: "20%",
-        left: "25%",
         display: "flex",
         borderRadius: 4,
         border: "none",
@@ -130,6 +154,8 @@ const ModalContent: React.FC<IModalContentProps> = ({ inputValue }) => {
             padding: 0,
             paddingX: 1,
             fontSize: 14,
+            fontFamily: "Inter, sans-serif",
+            fontWeight: 500,
             "&:focus": {
               outline: "none",
             },
@@ -146,6 +172,15 @@ const ModalContent: React.FC<IModalContentProps> = ({ inputValue }) => {
             },
           }}
           startAdornment={<EnhancedSearch color="white" size={25} />}
+          endAdornment={
+            <IconButton onClick={fulfillRequest}>
+              <ArrowRight
+                color={input.trim() === "" ? "#8386B7" : "white"}
+                size={25}
+                cursor={input.trim() === "" ? "default" : "pointer"}
+              />
+            </IconButton>
+          }
           placeholder="Type your question or topic to enhance"
           value={input}
           onChange={(e) => setInput(e.target.value)}
