@@ -1,13 +1,14 @@
 import { Box, Grow, Tooltip, Typography, Zoom } from "@mui/material";
 import { AnimatePresence, motion } from "framer-motion";
 import { FileQuestion, GripHorizontal, Microscope } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import {useCallback, useEffect, useRef, useState} from "react";
 import EnhancedSearch from "../../../components/Icons/EnhancedSearch";
 import MicroscopeCrossed from "../../../components/Icons/MicroscopeCrossed";
 import TextQuestion from "../../../components/Icons/TextQuestion";
 import SearchModal from "../search/components/SearchModal";
 import { allowedList } from "./allowedList";
 import ShowWindow from "./components/ShowWindow";
+import {useOutsideAlerter} from "./useOutsideAlerter";
 
 const Content = () => {
   const height = window.innerHeight;
@@ -59,27 +60,15 @@ const Content = () => {
     }
   }, [selection, isOpenWindow]);
 
-  function useOutsideAlerter(ref: any) {
-    useEffect(() => {
-      /**
-       * Alert if clicked on outside of element
-       */
-      function handleClickOutside(event: any) {
-        if (ref.current && !ref.current.contains(event.target)) {
-          setIsOpenWindow("");
-        }
-      }
-      // Bind the event listener
-      document.addEventListener("mousedown", handleClickOutside);
-      return () => {
-        // Unbind the event listener on clean up
-        document.removeEventListener("mousedown", handleClickOutside);
-      };
-    }, [ref]);
-  }
+  const wrapperRef = useRef<HTMLDivElement>(null);
 
-  const wrapperRef = useRef(null);
-  useOutsideAlerter(wrapperRef);
+  useOutsideAlerter(wrapperRef,
+    useCallback((isInBounds) => {
+      if (!isInBounds) {
+        setIsOpenWindow("");
+      }
+    }, [])
+  )
 
   return (
     <AnimatePresence>

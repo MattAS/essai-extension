@@ -9,17 +9,19 @@ interface IWindowProps {
   title: string;
   content: string;
   footer?: React.ReactNode;
+  id?: string;
 }
 
 type Ref = HTMLDivElement;
 
 const Window = React.forwardRef<Ref, IWindowProps>(
-  ({ title, content, footer }, ref) => {
+  ({ title, content, footer, id }, ref) => {
     const height = window.innerHeight;
     const width = window.innerWidth;
 
     return (
       <Box
+        id={id}
         ref={ref}
         sx={{
           minWidth: "450px",
