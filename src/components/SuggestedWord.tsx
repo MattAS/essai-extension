@@ -84,6 +84,7 @@ const SuggestedWord: React.FC<ISuggestedWordProps> = ({
               whiteSpace: !openArticles ? "nowrap" : "normal",
               textOverflow: "ellipsis",
               flexGrow: 1,
+              color: "white",
             }}
           >
             {definition}

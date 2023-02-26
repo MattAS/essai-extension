@@ -54,6 +54,7 @@ const RelatedArticles = ({ paper }: any) => {
           overflow: "hidden",
           WebkitBoxOrient: "vertical",
           display: "-webkit-box",
+          color: "white",
         }}
       >
         {title}

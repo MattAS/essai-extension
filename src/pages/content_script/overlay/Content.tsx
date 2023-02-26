@@ -18,13 +18,14 @@ const Content = () => {
     "summarize" | "highlight" | ""
   >("");
   const [showOverlay, setShowOverlay] = useState(false);
+  const port = chrome.runtime.connect({ name: "nobel-overlay" });
 
   useEffect(() => {
+    port.postMessage({ message: "loaded" });
     const url = new URL(window.location.href);
     if (!"www".includes(url.hostname)) {
       url.hostname = "www." + url.hostname;
     }
-    console.log(url);
     const isAllowed = allowedList.some((allowedUrl) => {
       const allowedUrlObj = new URL(allowedUrl);
       console.log(allowedUrlObj.hostname);
@@ -43,9 +44,10 @@ const Content = () => {
       document.removeEventListener("selectionchange", () => {});
     };
   });
+
   useEffect(() => {
-    chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-      if (request.message === "show") {
+    port.onMessage.addListener((msg) => {
+      if (msg.message === "show") {
         setShowOverlay(!showOverlay);
       }
     });
@@ -57,9 +59,6 @@ const Content = () => {
     }
   }, [selection, isOpenWindow]);
 
-  const wrapperRef = useRef(null);
-  useOutsideAlerter(wrapperRef);
-
   function useOutsideAlerter(ref: any) {
     useEffect(() => {
       /**
@@ -67,7 +66,8 @@ const Content = () => {
        */
       function handleClickOutside(event: any) {
         if (ref.current && !ref.current.contains(event.target)) {
-          setIsOpenWindow("");
+          // setIsOpenWindow("");
+          alert("You clicked outside of me!");
         }
       }
       // Bind the event listener
@@ -79,22 +79,25 @@ const Content = () => {
     }, [ref]);
   }
 
+  const wrapperRef = useRef(null);
+  useOutsideAlerter(wrapperRef);
+
   return (
-    <Box
-      sx={{
+    <div
+      style={{
         display: "flex",
-        gap: 1,
+        gap: 2,
       }}
     >
+      {showOverlay && isOpenWindow !== "" && (
+        <ShowWindow
+          name={isOpenWindow}
+          value={selection}
+          ref={wrapperRef}
+          key={"nobel-window"}
+        />
+      )}
       <AnimatePresence>
-        {isOpenWindow !== "" && (
-          <ShowWindow
-            name={isOpenWindow}
-            value={selection}
-            ref={wrapperRef}
-            key={"Window"}
-          />
-        )}
         {showOverlay && (
           <Box
             sx={{
@@ -218,13 +221,14 @@ const Content = () => {
             </Box>
           </Box>
         )}
+
         <SearchModal
           opened={openModal}
           handleClose={() => setOpenModal(false)}
           inputValue=""
         />
       </AnimatePresence>
-    </Box>
+    </div>
   );
 };
 

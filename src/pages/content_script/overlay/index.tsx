@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import styles from "./style.css";
+import "./style.css";
 import Content from "./Content";
 import { ThemeProvider } from "@mui/material";
 import createCache from "@emotion/cache";
