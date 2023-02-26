@@ -15,7 +15,7 @@ interface IModalContentProps {
 }
 
 const ModalContent: React.FC<IModalContentProps> = ({ inputValue }) => {
-  console.log(inputValue)
+  console.log(inputValue);
   const [openedIdx, setOpenedIdx] = React.useState<number | null>(null);
   const [input, setInput] = React.useState<string>(inputValue);
   const [suggested, setSuggested] = React.useState<any>();
@@ -59,10 +59,15 @@ const ModalContent: React.FC<IModalContentProps> = ({ inputValue }) => {
         searchForMoreKeywords: false,
       }
     );
+    console.log(paperRes.data);
     const newSuggestion = suggestion.map((suggestion: any, idx: number) => {
+      // Search for keyword in paperRes.data
+      const keywordResult = paperRes.data.find(
+        (item: any) => item.keyword === suggestion.keyword
+      );
       return {
         ...suggestion,
-        papers: paperRes.data[idx].papers,
+        papers: keywordResult.papers,
       };
     });
     setSuggested(newSuggestion);
