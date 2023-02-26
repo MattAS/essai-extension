@@ -117,6 +117,8 @@ const ModalContent: React.FC<IModalContentProps> = ({ inputValue }) => {
     setInput(question);
   };
 
+  console.log();
+
   return (
     <Box
       sx={{
@@ -304,7 +306,7 @@ const ModalContent: React.FC<IModalContentProps> = ({ inputValue }) => {
             <Typography
               sx={{
                 fontSize: 20,
-                color: "white"
+                color: "white",
               }}
             >
               Begin your guided research journey!
