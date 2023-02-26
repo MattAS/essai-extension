@@ -66,8 +66,7 @@ const Content = () => {
        */
       function handleClickOutside(event: any) {
         if (ref.current && !ref.current.contains(event.target)) {
-          // setIsOpenWindow("");
-          alert("You clicked outside of me!");
+          setIsOpenWindow("");
         }
       }
       // Bind the event listener
@@ -83,152 +82,145 @@ const Content = () => {
   useOutsideAlerter(wrapperRef);
 
   return (
-    <div
-      style={{
-        display: "flex",
-        gap: 2,
-      }}
-    >
-      {showOverlay && isOpenWindow !== "" && (
-        <ShowWindow
-          name={isOpenWindow}
-          value={selection}
-          ref={wrapperRef}
-          key={"nobel-window"}
-        />
-      )}
-      <AnimatePresence>
-        {showOverlay && (
+    <AnimatePresence>
+      {showOverlay && (
+        <Box
+          sx={{
+            display: "flex",
+            gap: "10px",
+            flexDirection: "row",
+            height: "210px!important",
+          }}
+          key={"overlay"}
+          component={motion.div}
+          initial={{ x: "100%" }}
+          animate={{ x: 0, transition: { duration: 0.2 }, type: "spring" }}
+          exit={{ x: "100%", transition: { duration: 0.2 } }}
+          drag
+          dragTransition={{ bounceStiffness: 600, bounceDamping: 10 }}
+          dragMomentum={false}
+          dragConstraints={{
+            top: 0,
+            left: -0.94 * width,
+            right: 0,
+            bottom: 0.75 * height,
+          }}
+        >
+          {showOverlay && isOpenWindow !== "" && (
+            <ShowWindow
+              name={isOpenWindow}
+              value={selection}
+              ref={wrapperRef}
+              key={"nobel-window"}
+            />
+          )}
           <Box
             sx={{
+              borderRadius: "10px",
+              padding: "18px !important",
+              paddingTop: "10px !important",
+              paddingX: "15px !important",
               display: "flex",
-              gap: "10px",
-              flexDirection: "row",
-              height: "210px!important",
-            }}
-            key={"overlay"}
-            component={motion.div}
-            initial={{ x: "100%" }}
-            animate={{ x: 0, transition: { duration: 0.2 }, type: "spring" }}
-            exit={{ x: "100%", transition: { duration: 0.2 } }}
-            drag
-            dragTransition={{ bounceStiffness: 600, bounceDamping: 10 }}
-            dragMomentum={false}
-            dragConstraints={{
-              top: 0,
-              left: -0.94 * width,
-              right: 0,
-              bottom: 0.75 * height,
+              flexDirection: "column",
+              alignItems: "center",
+              backgroundColor: "#080A29",
+              gap: 2,
             }}
           >
             <Box
               sx={{
-                borderRadius: "10px",
-                padding: "18px !important",
-                paddingTop: "10px !important",
-                paddingX: "15px !important",
+                height: "10px",
+                marginBottom: 1,
+              }}
+            >
+              <GripHorizontal size={24} color="#6D6D6D" cursor={"grab"} />
+            </Box>
+            <Box
+              sx={{
                 display: "flex",
                 flexDirection: "column",
+                justifyContent: "space-evenly",
                 alignItems: "center",
-                backgroundColor: "#080A29",
                 gap: 2,
               }}
             >
-              <Box
+              <Tooltip
+                title="Search"
+                placement="left"
+                arrow
+                TransitionComponent={Grow}
+              >
+                <span style={{ height: "25px" }}>
+                  <EnhancedSearch
+                    color="white"
+                    size={25}
+                    cursor="pointer"
+                    onClick={() => setOpenModal(true)}
+                  />
+                </span>
+              </Tooltip>
+              <Tooltip
+                title="Summarize Page"
+                placement="left"
+                arrow
+                TransitionComponent={Grow}
                 sx={{
-                  height: "10px",
-                  marginBottom: 1,
+                  "& .MuiTooltip-popper": {
+                    backgroundColor: "#080A29",
+                  },
                 }}
               >
-                <GripHorizontal size={24} color="#6D6D6D" cursor={"grab"} />
-              </Box>
-              <Box
-                sx={{
-                  display: "flex",
-                  flexDirection: "column",
-                  justifyContent: "space-evenly",
-                  alignItems: "center",
-                  gap: 2,
-                }}
+                <FileQuestion
+                  size={24}
+                  color={"white"}
+                  cursor={"pointer"}
+                  onClick={() => setIsOpenWindow("summarize")}
+                />
+              </Tooltip>
+              <Tooltip
+                title="Coming Soon"
+                placement="left"
+                arrow
+                TransitionComponent={Grow}
               >
-                <Tooltip
-                  title="Search"
-                  placement="left"
-                  arrow
-                  TransitionComponent={Grow}
-                >
-                  <span style={{ height: "25px" }}>
-                    <EnhancedSearch
-                      color="white"
-                      size={25}
-                      cursor="pointer"
-                      onClick={() => setOpenModal(true)}
-                    />
-                  </span>
-                </Tooltip>
-                <Tooltip
-                  title="Summarize Page"
-                  placement="left"
-                  arrow
-                  TransitionComponent={Grow}
-                  sx={{
-                    "& .MuiTooltip-popper": {
-                      backgroundColor: "#080A29",
-                    },
+                <span
+                  style={{
+                    height: "25px",
                   }}
                 >
-                  <FileQuestion
-                    size={24}
-                    color={"white"}
+                  <MicroscopeCrossed size={26} color={"#6D6D6D"} />
+                </span>
+              </Tooltip>
+              <Tooltip
+                title="Explain Selection"
+                placement="left"
+                arrow
+                TransitionComponent={Grow}
+              >
+                <span
+                  style={{
+                    height: "25px",
+                  }}
+                >
+                  <TextQuestion
+                    size={25}
+                    color={selection === "" ? "#6D6D6D" : "white"}
                     cursor={"pointer"}
-                    onClick={() => setIsOpenWindow("summarize")}
+                    onClick={() => setIsOpenWindow("highlight")}
                   />
-                </Tooltip>
-                <Tooltip
-                  title="Coming Soon"
-                  placement="left"
-                  arrow
-                  TransitionComponent={Grow}
-                >
-                  <span
-                    style={{
-                      height: "25px",
-                    }}
-                  >
-                    <MicroscopeCrossed size={26} color={"#6D6D6D"} />
-                  </span>
-                </Tooltip>
-                <Tooltip
-                  title="Explain Selection"
-                  placement="left"
-                  arrow
-                  TransitionComponent={Grow}
-                >
-                  <span
-                    style={{
-                      height: "25px",
-                    }}
-                  >
-                    <TextQuestion
-                      size={25}
-                      color={selection === "" ? "#6D6D6D" : "white"}
-                      cursor={"pointer"}
-                      onClick={() => setIsOpenWindow("highlight")}
-                    />
-                  </span>
-                </Tooltip>
-              </Box>
+                </span>
+              </Tooltip>
             </Box>
           </Box>
-        )}
+        </Box>
+      )}
 
-        <SearchModal
-          opened={openModal}
-          handleClose={() => setOpenModal(false)}
-          inputValue=""
-        />
-      </AnimatePresence>
-    </div>
+      <SearchModal
+        opened={openModal}
+        handleClose={() => setOpenModal(false)}
+        inputValue=""
+      />
+    </AnimatePresence>
   );
 };
 
