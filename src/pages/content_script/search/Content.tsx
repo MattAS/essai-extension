@@ -10,18 +10,16 @@ const Content = () => {
   const [opened, setOpened] = useState(false);
   const [inputValue, setInputValue] = useState("");
 
-  useEffect(() => {
+  const handleOpen = () => {
     const input =
       (document.querySelector('[aria-label="Search"]') as HTMLInputElement) ||
       (document
         .getElementsByClassName("a4bIc")[0]
         .querySelector('[aria-label="Google Search"]') as HTMLInputElement);
 
-    if (input && opened) {
+    if (input ) {
       setInputValue(input.value);
     }
-  }, [opened]);
-  const handleOpen = () => {
     setOpened(true);
   };
 
@@ -29,7 +27,7 @@ const Content = () => {
     setOpened(false);
   };
   return (
-    <div>
+    <>
       <div id="nobel-widget" onClick={handleOpen}>
         <NobelLogoSquare size={24} />
       </div>
@@ -38,7 +36,7 @@ const Content = () => {
         handleClose={handleClose}
         inputValue={inputValue}
       />
-    </div>
+    </>
   );
 };
 

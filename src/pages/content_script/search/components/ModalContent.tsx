@@ -15,6 +15,7 @@ interface IModalContentProps {
 }
 
 const ModalContent: React.FC<IModalContentProps> = ({ inputValue }) => {
+  console.log(inputValue)
   const [openedIdx, setOpenedIdx] = React.useState<number | null>(null);
   const [input, setInput] = React.useState<string>(inputValue);
   const [suggested, setSuggested] = React.useState<any>();
@@ -183,6 +184,7 @@ const ModalContent: React.FC<IModalContentProps> = ({ inputValue }) => {
           }
           placeholder="Type your question or topic to enhance"
           value={input}
+          defaultValue={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyPress={onEnter}
         />
@@ -302,6 +304,7 @@ const ModalContent: React.FC<IModalContentProps> = ({ inputValue }) => {
             <Typography
               sx={{
                 fontSize: 20,
+                color: "white"
               }}
             >
               Begin your guided research journey!
