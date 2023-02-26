@@ -1,4 +1,5 @@
 import axios from "axios";
+import { FileQuestion } from "lucide-react";
 import React from "react";
 import { useEffect, useState } from "react";
 import { readCache, writeToCache } from "../../../../utils/cache";
@@ -27,7 +28,14 @@ const SummarizeWindow = React.forwardRef<Ref, ISummarizeWindowProps>(
         });
     }, []);
 
-    return <Window title="Summary" content={summary} ref={ref} />;
+    return (
+      <Window
+        title="Summary"
+        content={summary}
+        ref={ref}
+        titleIcon={<FileQuestion size={24} color={"white"} />}
+      />
+    );
   }
 );
 

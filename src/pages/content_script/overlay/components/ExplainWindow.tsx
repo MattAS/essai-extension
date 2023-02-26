@@ -3,6 +3,7 @@ import axios from "axios";
 import { Microscope } from "lucide-react";
 import React from "react";
 import { useEffect, useMemo, useState } from "react";
+import TextQuestion from "../../../../components/Icons/TextQuestion";
 import { readCache, writeToCache } from "../../../../utils/cache";
 import Window from "./Window";
 
@@ -80,6 +81,7 @@ const ExplainWindow = React.forwardRef<Ref, IExplainWindowProps>(
         content={summary}
         footer={DeepDiveButton}
         ref={ref}
+        titleIcon={<TextQuestion size={24} color={"white"} />}
       />
     );
   }

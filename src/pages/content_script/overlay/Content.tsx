@@ -1,14 +1,14 @@
 import { Box, Grow, Tooltip, Typography, Zoom } from "@mui/material";
 import { AnimatePresence, motion } from "framer-motion";
 import { FileQuestion, GripHorizontal, Microscope } from "lucide-react";
-import {useCallback, useEffect, useRef, useState} from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import EnhancedSearch from "../../../components/Icons/EnhancedSearch";
 import MicroscopeCrossed from "../../../components/Icons/MicroscopeCrossed";
 import TextQuestion from "../../../components/Icons/TextQuestion";
 import SearchModal from "../search/components/SearchModal";
 import { allowedList } from "./allowedList";
 import ShowWindow from "./components/ShowWindow";
-import {useOutsideAlerter} from "./useOutsideAlerter";
+import { useOutsideAlerter } from "./useOutsideAlerter";
 
 const Content = () => {
   const height = window.innerHeight;
@@ -29,7 +29,6 @@ const Content = () => {
     }
     const isAllowed = allowedList.some((allowedUrl) => {
       const allowedUrlObj = new URL(allowedUrl);
-      console.log(allowedUrlObj.hostname);
       return allowedUrlObj.hostname === url.hostname;
     });
     if (isAllowed) {
@@ -62,13 +61,14 @@ const Content = () => {
 
   const wrapperRef = useRef<HTMLDivElement>(null);
 
-  useOutsideAlerter(wrapperRef,
+  useOutsideAlerter(
+    wrapperRef,
     useCallback((isInBounds) => {
       if (!isInBounds) {
         setIsOpenWindow("");
       }
     }, [])
-  )
+  );
 
   return (
     <AnimatePresence>
@@ -167,7 +167,7 @@ const Content = () => {
                 />
               </Tooltip>
               <Tooltip
-                title="Coming Soon"
+                title="Deep Dive - Coming Soon"
                 placement="left"
                 arrow
                 TransitionComponent={Grow}

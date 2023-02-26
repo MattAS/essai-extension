@@ -10,12 +10,13 @@ interface IWindowProps {
   content: string;
   footer?: React.ReactNode;
   id?: string;
+  titleIcon?: React.ReactNode;
 }
 
 type Ref = HTMLDivElement;
 
 const Window = React.forwardRef<Ref, IWindowProps>(
-  ({ title, content, footer, id }, ref) => {
+  ({ title, content, footer, id, titleIcon }, ref) => {
     const height = window.innerHeight;
     const width = window.innerWidth;
 
@@ -69,7 +70,7 @@ const Window = React.forwardRef<Ref, IWindowProps>(
           }}
         >
           <Box sx={{ display: "flex", gap: 2, alignItems: "center" }}>
-            <TextQuestion size={24} color="white" />
+            {titleIcon ? titleIcon : null}
             <Typography
               variant="h6"
               sx={{
