@@ -1,10 +1,11 @@
 import { Box, Grow, Tooltip, Typography, Zoom } from "@mui/material";
 import { AnimatePresence, motion } from "framer-motion";
-import { FileQuestion, GripHorizontal, Microscope } from "lucide-react";
+import { FileQuestion, GripHorizontal, Microscope, Send } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import EnhancedSearch from "../../../components/Icons/EnhancedSearch";
 import MicroscopeCrossed from "../../../components/Icons/MicroscopeCrossed";
 import TextQuestion from "../../../components/Icons/TextQuestion";
+import TooltipIcon from "../../../components/TooltipIcon";
 import SearchModal from "../search/components/SearchModal";
 import { allowedList } from "./allowedList";
 import ShowWindow from "./components/ShowWindow";
@@ -16,7 +17,7 @@ const Content = () => {
   const [selection, setSelection] = useState("");
   const [openModal, setOpenModal] = useState(false);
   const [isOpenWindow, setIsOpenWindow] = useState<
-    "summarize" | "highlight" | ""
+    "summarize" | "highlight" | "feedback" | ""
   >("");
   const [showOverlay, setShowOverlay] = useState(false);
   const port = chrome.runtime.connect({ name: "nobel-overlay" });
@@ -74,12 +75,6 @@ const Content = () => {
     <AnimatePresence>
       {showOverlay && (
         <Box
-          sx={{
-            display: "flex",
-            gap: "10px",
-            flexDirection: "row",
-            height: "210px!important",
-          }}
           key={"overlay"}
           component={motion.div}
           initial={{ x: "100%" }}
@@ -94,6 +89,10 @@ const Content = () => {
             right: 0,
             bottom: 0.75 * height,
           }}
+          sx={{
+            display: "flex",
+            gap: 1,
+          }}
         >
           {showOverlay && isOpenWindow !== "" && (
             <ShowWindow
@@ -105,100 +104,93 @@ const Content = () => {
           )}
           <Box
             sx={{
-              borderRadius: "10px",
-              padding: "18px !important",
-              paddingTop: "10px !important",
-              paddingX: "15px !important",
               display: "flex",
+              gap: "10px",
+              height: "fit-content",
               flexDirection: "column",
-              alignItems: "center",
-              backgroundColor: "#080A29",
-              gap: 2,
             }}
           >
             <Box
               sx={{
-                height: "10px",
-                marginBottom: 1,
-              }}
-            >
-              <GripHorizontal size={24} color="#6D6D6D" cursor={"grab"} />
-            </Box>
-            <Box
-              sx={{
+                borderRadius: "10px",
+                padding: "18px !important",
+                paddingTop: "10px !important",
+                paddingX: "15px !important",
                 display: "flex",
                 flexDirection: "column",
-                justifyContent: "space-evenly",
                 alignItems: "center",
-                gap: 2,
+                backgroundColor: "#080A29",
+                gap: 2.2,
+                overflow: "hidden",
+                maxHeight: "190px",
               }}
             >
-              <Tooltip
-                title="Search"
-                placement="left"
-                arrow
-                TransitionComponent={Grow}
+              <Box
+                sx={{
+                  height: "10px",
+                  marginBottom: 1,
+                }}
               >
-                <span style={{ height: "25px" }}>
+                <GripHorizontal size={24} color="#6D6D6D" cursor={"grab"} />
+              </Box>
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "space-evenly",
+                  alignItems: "center",
+                  gap: 2,
+                }}
+              >
+                <TooltipIcon tooltip="Search">
                   <EnhancedSearch
                     color="white"
                     size={25}
                     cursor="pointer"
                     onClick={() => setOpenModal(true)}
                   />
-                </span>
-              </Tooltip>
-              <Tooltip
-                title="Summarize Page"
-                placement="left"
-                arrow
-                TransitionComponent={Grow}
-                sx={{
-                  "& .MuiTooltip-popper": {
-                    backgroundColor: "#080A29",
-                  },
-                }}
-              >
-                <FileQuestion
-                  size={24}
-                  color={"white"}
-                  cursor={"pointer"}
-                  onClick={() => setIsOpenWindow("summarize")}
-                />
-              </Tooltip>
-              <Tooltip
-                title="Deep Dive - Coming Soon"
-                placement="left"
-                arrow
-                TransitionComponent={Grow}
-              >
-                <span
-                  style={{
-                    height: "25px",
-                  }}
-                >
+                </TooltipIcon>
+                <TooltipIcon tooltip="Summarize Page">
+                  <FileQuestion
+                    size={24}
+                    color={"white"}
+                    cursor={"pointer"}
+                    onClick={() => setIsOpenWindow("summarize")}
+                  />
+                </TooltipIcon>
+                <TooltipIcon tooltip="Deep Dive - Coming Soon">
                   <MicroscopeCrossed size={26} color={"#6D6D6D"} />
-                </span>
-              </Tooltip>
-              <Tooltip
-                title="Explain Selection"
-                placement="left"
-                arrow
-                TransitionComponent={Grow}
-              >
-                <span
-                  style={{
-                    height: "25px",
-                  }}
-                >
+                </TooltipIcon>
+                <TooltipIcon tooltip="Explain Selection">
                   <TextQuestion
                     size={25}
                     color={selection === "" ? "#6D6D6D" : "white"}
                     cursor={"pointer"}
                     onClick={() => setIsOpenWindow("highlight")}
                   />
-                </span>
-              </Tooltip>
+                </TooltipIcon>
+              </Box>
+            </Box>
+            <Box
+              sx={{
+                width: 25,
+                height: 25,
+                borderRadius: "50%",
+                backgroundColor: "#080A29",
+                padding: 1.5,
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <TooltipIcon tooltip="Feedback">
+                <Send
+                  size={25}
+                  color={"white"}
+                  cursor={"pointer"}
+                  onClick={() => setIsOpenWindow("feedback")}
+                />
+              </TooltipIcon>
             </Box>
           </Box>
         </Box>

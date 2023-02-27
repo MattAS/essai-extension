@@ -1,8 +1,8 @@
-import { Button } from "@mui/material";
 import axios from "axios";
 import { Microscope } from "lucide-react";
 import React from "react";
 import { useEffect, useMemo, useState } from "react";
+import Button from "../../../../components/Button";
 import TextQuestion from "../../../../components/Icons/TextQuestion";
 import { readCache, writeToCache } from "../../../../utils/cache";
 import Window from "./Window";
@@ -53,22 +53,7 @@ const ExplainWindow = React.forwardRef<Ref, IExplainWindowProps>(
 
     const DeepDiveButton = useMemo(() => {
       return (
-        <Button
-          sx={{
-            backgroundColor: "#624EE1",
-            color: "white",
-            textTransform: "none",
-            fontWeight: "bold",
-            paddingY: 1,
-            paddingX: 2,
-            width: "45%",
-            display: "flex",
-            gap: 2,
-            "&:hover": {
-              backgroundColor: "#624EE1",
-            },
-          }}
-        >
+        <Button>
           <Microscope size={20} color="white" />
           Deep Dive
         </Button>
