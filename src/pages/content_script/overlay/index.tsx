@@ -22,6 +22,23 @@ const shadowRootContainer = container.attachShadow({ mode: "open" });
 shadowRootContainer.appendChild(emotionRoot);
 shadowRootContainer.appendChild(root);
 
+let sheet = new CSSStyleSheet();
+sheet.replaceSync(`
+  #nobel-overlay-root {
+    position: fixed;
+    top: 2%;
+    right: 1.5%;
+    z-index: 2147483647;
+    gap: 10px;
+    display: flex;
+    flex-direction: row-reverse;
+    width: 1px;
+    height: 1px;
+  }
+`);
+
+shadowRootContainer.adoptedStyleSheets = [sheet];
+
 const theme = createTheme({
   components: {
     MuiTooltip: {

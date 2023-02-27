@@ -1,7 +1,7 @@
 {
     "manifest_version": 3,
     "name": "Nobel",
-    "version": "0.0.1",
+    "version": "0.1.0",
     "action": {
         "default_title": "Nobel Research Assistant"
     },
@@ -20,10 +20,7 @@
         "type": "module"
     },
     "permissions": [
-        "contextMenus",
-        "tabs",
-        "storage",
-        "activeTab"
+        "storage"
     ],
     "icons": {
         "128": "src/assets/NobeLogoSquare.png"

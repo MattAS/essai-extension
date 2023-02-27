@@ -7,5 +7,6 @@ Features:
     ☐ Abstract
     ✘ Highlight and hover with two options, one for summary and the other for related articles @cancelled(23-02-21 15:38)
     ☐ Sometimes people have an endgoal in development (full stack). Our extension can give a "course plan" for that search
-    ☐ Make the extension appear programmatically
-    ☐ Move modals to programmatic
+    ✔ Make the extension appear programmatically @done(23-02-25 23:03)
+    ✔ Move modals to programmatic @done(23-02-25 23:03)
+    ☐ Authentication for backend
