@@ -190,12 +190,14 @@ const Content = () => {
                     onClick={() => setIsOpenWindow("highlight")}
                   />
                 </TooltipIcon>
-                <X
-                  size={25}
-                  color={"white"}
-                  cursor={"pointer"}
-                  onClick={handleClose}
-                />
+                <TooltipIcon tooltip="Close">
+                  <X
+                    size={25}
+                    color={"white"}
+                    cursor={"pointer"}
+                    onClick={handleClose}
+                  />
+                </TooltipIcon>
               </Box>
               <Box
                 sx={{
