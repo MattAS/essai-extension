@@ -1,6 +1,14 @@
 import { Box, Grow, Tooltip, Typography, Zoom } from "@mui/material";
 import { AnimatePresence, motion } from "framer-motion";
-import { FileQuestion, GripHorizontal, Microscope, Send } from "lucide-react";
+import {
+  ArrowDown,
+  ChevronDown,
+  FileQuestion,
+  GripHorizontal,
+  Microscope,
+  Send,
+  X,
+} from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import EnhancedSearch from "../../../components/Icons/EnhancedSearch";
 import MicroscopeCrossed from "../../../components/Icons/MicroscopeCrossed";
@@ -71,6 +79,8 @@ const Content = () => {
     }, [])
   );
 
+  const [showClose, setShowClose] = useState(false);
+
   return (
     <AnimatePresence>
       {showOverlay && (
@@ -105,9 +115,10 @@ const Content = () => {
           <Box
             sx={{
               display: "flex",
-              gap: "10px",
               height: "fit-content",
               flexDirection: "column",
+              transition: "height 0.2s ease-in-out",
+              gap: 1,
             }}
           >
             <Box
@@ -120,15 +131,15 @@ const Content = () => {
                 flexDirection: "column",
                 alignItems: "center",
                 backgroundColor: "#080A29",
-                gap: 2.2,
                 overflow: "hidden",
-                maxHeight: "190px",
               }}
+              onMouseEnter={() => setShowClose(true)}
+              onMouseLeave={() => setShowClose(false)}
             >
               <Box
                 sx={{
                   height: "10px",
-                  marginBottom: 1,
+                  marginBottom: 3,
                 }}
               >
                 <GripHorizontal size={24} color="#6D6D6D" cursor={"grab"} />
@@ -137,9 +148,15 @@ const Content = () => {
                 sx={{
                   display: "flex",
                   flexDirection: "column",
-                  justifyContent: "space-evenly",
                   alignItems: "center",
-                  gap: 2,
+                  overflow: "hidden",
+                  height: showClose ? "180px" : "150px",
+                  "&:hover": {
+                    height: "180px",
+                    transition: "height 0.2s ease-in-out",
+                  },
+                  transition: "height 0.2s ease-in-out",
+                  gap: 1.5,
                 }}
               >
                 <TooltipIcon tooltip="Search">
@@ -169,13 +186,26 @@ const Content = () => {
                     onClick={() => setIsOpenWindow("highlight")}
                   />
                 </TooltipIcon>
+                <X
+                  size={25}
+                  color={"#6D6D6D"}
+                  cursor={"pointer"}
+                  onClick={() => setShowOverlay(false)}
+                />
+              </Box>
+              <Box
+                sx={{
+                  height: 15,
+                }}
+              >
+                <ChevronDown size={15} color={"#6D6D6D"} />
               </Box>
             </Box>
             <Box
               sx={{
-                width: 25,
-                height: 25,
-                borderRadius: "50%",
+                width: 30,
+                height: 30,
+                borderRadius: 2,
                 backgroundColor: "#080A29",
                 padding: 1.5,
                 display: "flex",
@@ -183,7 +213,12 @@ const Content = () => {
                 alignItems: "center",
               }}
             >
-              <TooltipIcon tooltip="Feedback">
+              <TooltipIcon
+                tooltip="Feedback"
+                sx={{
+                  marginRight: "4px",
+                }}
+              >
                 <Send
                   size={25}
                   color={"white"}

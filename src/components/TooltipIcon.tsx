@@ -4,11 +4,13 @@ import { Grow, IconButton, Tooltip } from "@mui/material";
 interface ITooltipIconProps {
   children: React.ReactNode;
   tooltip: string;
+  sx?: any;
 }
 
 const TooltipIcon: React.FC<ITooltipIconProps> = ({
   children,
   tooltip,
+  sx,
   ...props
 }) => {
   return (
@@ -22,6 +24,7 @@ const TooltipIcon: React.FC<ITooltipIconProps> = ({
       <span
         style={{
           height: "25px",
+          ...sx,
         }}
       >
         {children}
