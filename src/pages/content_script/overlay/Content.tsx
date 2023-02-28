@@ -3,6 +3,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import {
   ArrowDown,
   ChevronDown,
+  ChevronUp,
   FileQuestion,
   GripHorizontal,
   Microscope,
@@ -29,6 +30,7 @@ const Content = () => {
   >("");
   const [showOverlay, setShowOverlay] = useState(false);
   const port = chrome.runtime.connect({ name: "nobel-overlay" });
+  const [showClose, setShowClose] = useState(false);
 
   useEffect(() => {
     port.postMessage({ message: "loaded" });
@@ -68,6 +70,11 @@ const Content = () => {
     }
   }, [selection, isOpenWindow]);
 
+  const handleClose = () => {
+    setShowOverlay(false);
+    setShowClose(false);
+  };
+
   const wrapperRef = useRef<HTMLDivElement>(null);
 
   useOutsideAlerter(
@@ -78,8 +85,6 @@ const Content = () => {
       }
     }, [])
   );
-
-  const [showClose, setShowClose] = useState(false);
 
   return (
     <AnimatePresence>
@@ -117,14 +122,12 @@ const Content = () => {
               display: "flex",
               height: "fit-content",
               flexDirection: "column",
-              transition: "height 0.2s ease-in-out",
               gap: 1,
             }}
           >
             <Box
               sx={{
                 borderRadius: "10px",
-                padding: "18px !important",
                 paddingTop: "10px !important",
                 paddingX: "15px !important",
                 display: "flex",
@@ -132,6 +135,7 @@ const Content = () => {
                 alignItems: "center",
                 backgroundColor: "#080A29",
                 overflow: "hidden",
+                paddingBottom: "10px!important",
               }}
               onMouseEnter={() => setShowClose(true)}
               onMouseLeave={() => setShowClose(false)}
@@ -150,13 +154,13 @@ const Content = () => {
                   flexDirection: "column",
                   alignItems: "center",
                   overflow: "hidden",
-                  height: showClose ? "180px" : "150px",
+                  height: showClose ? "195px" : "155px",
                   "&:hover": {
-                    height: "180px",
+                    height: "195px",
                     transition: "height 0.2s ease-in-out",
                   },
                   transition: "height 0.2s ease-in-out",
-                  gap: 1.5,
+                  gap: 2,
                 }}
               >
                 <TooltipIcon tooltip="Search">
@@ -188,17 +192,21 @@ const Content = () => {
                 </TooltipIcon>
                 <X
                   size={25}
-                  color={"#6D6D6D"}
+                  color={"white"}
                   cursor={"pointer"}
-                  onClick={() => setShowOverlay(false)}
+                  onClick={handleClose}
                 />
               </Box>
               <Box
                 sx={{
-                  height: 15,
+                  height: 18,
                 }}
               >
-                <ChevronDown size={15} color={"#6D6D6D"} />
+                {showClose ? (
+                  <ChevronUp size={18} color={"#6D6D6D"} />
+                ) : (
+                  <ChevronDown size={18} color={"#6D6D6D"} />
+                )}
               </Box>
             </Box>
             <Box
