@@ -10,3 +10,11 @@ Features:
     ✔ Make the extension appear programmatically @done(23-02-25 23:03)
     ✔ Move modals to programmatic @done(23-02-25 23:03)
     ☐ Authentication for backend
+    ☐ Fix weird button layout on explain paper
+    ☐ Add error bounds
+    ☐ Add stopping point when error
+    ☐ Change the summarize paper so that we take the document body from the client instead of the server
+
+
+☐ Summary doesnt take note of opinions
+☐ Make it more clear that explain selection is not the whole article summary 

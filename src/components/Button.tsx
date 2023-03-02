@@ -22,7 +22,7 @@ const Button: React.FC<IButtonProps> = ({
         fontWeight: "bold",
         paddingY: 1,
         paddingX: 2,
-        width: "45%",
+        minWidth: "200px",
         display: "flex",
         gap: 2,
         "&:hover": {

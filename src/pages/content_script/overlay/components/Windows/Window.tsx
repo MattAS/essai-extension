@@ -3,8 +3,8 @@ import { AnimatePresence, motion } from "framer-motion";
 import { GripHorizontal } from "lucide-react";
 import React from "react";
 import { useEffect, useRef } from "react";
-import TextQuestion from "../../../../components/Icons/TextQuestion";
-import LoadingText from "../../../../components/loading/LoadingText";
+import TextQuestion from "../../../../../components/Icons/TextQuestion";
+import LoadingText from "../../../../../components/loading/LoadingText";
 interface IWindowProps {
   title: string;
   content: string;
@@ -22,7 +22,7 @@ const Window = React.forwardRef<Ref, IWindowProps>(
 
     return (
       <Box
-        id={id}
+        id={`window-${id}`}
         ref={ref}
         sx={{
           minWidth: "450px",
@@ -52,6 +52,7 @@ const Window = React.forwardRef<Ref, IWindowProps>(
           right: 0.04 * width,
           bottom: 0.38 * height,
         }}
+        key={"window"}
       >
         <Box
           sx={{

@@ -2,7 +2,7 @@ import axios from "axios";
 import { FileQuestion } from "lucide-react";
 import React from "react";
 import { useEffect, useState } from "react";
-import { readCache, writeToCache } from "../../../../utils/cache";
+import { readCache, writeToCache } from "../../../../../utils/cache";
 import Window from "./Window";
 
 interface ISummarizeWindowProps {}
