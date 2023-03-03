@@ -32,7 +32,7 @@ const ExplainWindow = React.forwardRef<Ref, IExplainWindowProps>(
         } else {
           axios
             .post(
-              "https://essai-go-api-le4jqewulq-ue.a.run.app/api/summary/highlight",
+              "https://nobel-go-api-le4jqewulq-ue.a.run.app/api/summary/highlight",
               {
                 text: selection,
               }

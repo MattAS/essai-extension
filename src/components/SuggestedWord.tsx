@@ -8,27 +8,21 @@ import LoadingText from "./loading/LoadingText";
 import RelatedArticles from "./RelatedArticles";
 
 interface ISuggestedWordProps {
-  question: string;
   word: string;
   definition: string;
-  links: {
-    url: string;
-    title: string;
-  }[];
   opened: boolean;
   setOpened: () => void;
 }
 
 const SuggestedWord: React.FC<ISuggestedWordProps> = ({
-  question,
   word,
   definition,
-  links,
   opened,
   setOpened,
 }) => {
   const [openArticles, setOpenArticles] = useState(false);
-  const [searchQueries, setSearchQueries] = useState<{ queries: string }[]>([]);
+  const [searchQueries, setSearchQueries] = useState<string[]>([]);
+  const [papers, setPapers] = useState<any[]>([]);
 
   useEffect(() => {
     const getCache = async () => {
@@ -47,21 +41,47 @@ const SuggestedWord: React.FC<ISuggestedWordProps> = ({
   }, [opened]);
 
   useEffect(() => {
-    if (openArticles && searchQueries.length === 0) {
-      axios
-        .post(
-          "https://nobel-go-api-le4jqewulq-ue.a.run.app/api/keyword/queries",
-          {
-            question: question,
-            keyword: word,
-          }
-        )
-        .then((res) => {
-          setSearchQueries(res.data.result);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+    if (openArticles) {
+      if (searchQueries.length === 0) {
+        axios
+          .post(
+            "https://nobel-go-api-le4jqewulq-ue.a.run.app/api/keyword/queries",
+            {
+              keyword: word,
+            }
+          )
+          .then((res) => {
+            const queries = res.data.result.map((result: any) => {
+              return result.queries
+                .split("?")
+                .map((query: string) => {
+                  if (query !== "") {
+                    return query.trim() + "?";
+                  }
+                })
+                .filter((query: string) => query !== undefined);
+            });
+            setSearchQueries(queries);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
+      if (papers.length === 0) {
+        axios
+          .post(
+            "https://essai-go-api-le4jqewulq-ue.a.run.app/api/paper/by/keyword/batch",
+            {
+              keywords: [word],
+            }
+          )
+          .then((res) => {
+            setPapers(res.data[0].papers);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
     }
   }, [openArticles]);
 
@@ -183,10 +203,14 @@ const SuggestedWord: React.FC<ISuggestedWordProps> = ({
                 justifyContent: "space-between",
               }}
             >
-              {links.length === 0 ? (
+              {papers.length === 0 ? (
                 <LoadingArticles />
               ) : (
-                links.map((link) => <RelatedArticles paper={link} />)
+                papers.map((link: any, index: number) => {
+                  return (
+                    <RelatedArticles paper={link} key={`article-${index}`} />
+                  );
+                })
               )}
             </Box>
           </Box>
@@ -220,8 +244,9 @@ const SuggestedWord: React.FC<ISuggestedWordProps> = ({
               {searchQueries.length === 0 ? (
                 <LoadingText numLines={5} variant="body1" />
               ) : (
-                searchQueries.map((query: any) => (
+                searchQueries.map((query: string, index: number) => (
                   <Typography
+                    key={`query-${index}`}
                     sx={{
                       color: "white",
                       cursor: "pointer",
@@ -229,12 +254,12 @@ const SuggestedWord: React.FC<ISuggestedWordProps> = ({
                     }}
                     onClick={() =>
                       window.open(
-                        `https://www.google.com/search?q=${query.queries}`,
+                        `https://www.google.com/search?q=${query}`,
                         "_blank"
                       )
                     }
                   >
-                    {query.queries}
+                    {query}
                   </Typography>
                 ))
               )}
