@@ -14,7 +14,7 @@ const LoadingArticles = () => {
         <Skeleton
           key={`Article-${i}`}
           variant="rectangular"
-          width="48%"
+          width="45%"
           height="8vh"
           sx={{
             backgroundColor: "rgba(255, 255, 255, 0.11)",

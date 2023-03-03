@@ -34,7 +34,7 @@ const ModalContent: React.FC<IModalContentProps> = ({ inputValue }) => {
 
   const getContent = async () => {
     const res = await axios.post(
-      "https://essai-go-api-le4jqewulq-ue.a.run.app/api/keyword/by/question",
+      "https://nobel-go-api-le4jqewulq-ue.a.run.app/api/keyword/chat/by/question",
       {
         question: input,
       }
@@ -59,7 +59,6 @@ const ModalContent: React.FC<IModalContentProps> = ({ inputValue }) => {
         searchForMoreKeywords: false,
       }
     );
-    console.log(paperRes.data);
     const newSuggestion = suggestion.map((suggestion: any, idx: number) => {
       // Search for keyword in paperRes.data
       const keywordResult = paperRes.data.find(
@@ -121,8 +120,6 @@ const ModalContent: React.FC<IModalContentProps> = ({ inputValue }) => {
     setSuggested(suggestion);
     setInput(question);
   };
-
-  console.log();
 
   return (
     <Box
@@ -230,6 +227,7 @@ const ModalContent: React.FC<IModalContentProps> = ({ inputValue }) => {
             </Typography>
             {suggested.map((suggestion: any, index: number) => (
               <SuggestedWord
+                question={input}
                 key={index}
                 opened={openedIdx === index}
                 setOpened={() => handleOpen(index)}

@@ -100,7 +100,7 @@ const Window = React.forwardRef<Ref, IWindowProps>(
             ) : (
               <Typography
                 sx={{
-                  color: "white",
+                  color: "#9D9D9D",
                   fontSize: 14,
                   lineHeight: 1.8,
                 }}
