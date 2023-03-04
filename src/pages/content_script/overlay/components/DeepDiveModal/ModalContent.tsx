@@ -19,14 +19,21 @@ const ModalContent: React.FC<IModalContentProps> = ({ deepDiveFrom }) => {
   const [expanded, setExpanded] = useState<boolean>(false);
 
   useEffect(() => {
-    if (deepDiveFrom === "explain") {
+    readCache("nobel-deep-dive").then((result) => {
+      if (result["nobel-deep-dive"] && result["nobel-deep-dive"].response) {
+        setExplain(result["nobel-deep-dive"].response.context);
+        setArticles(result["nobel-deep-dive"].response.data);
+      }
+    });
+  }, []);
+
+  useEffect(() => {
+    if (deepDiveFrom === "explain" && explain === "") {
       readCache("nobel-highlight").then((result) => {
-        let context = "";
-        console.log(result);
         if (result["nobel-highlight"] && result["nobel-highlight"].response) {
           setExplain(result["nobel-highlight"].response);
         } else {
-          context = document.body.innerText.slice(100, 5100);
+          setExplain(document.body.innerText.slice(100, 5100));
         }
       });
     } else {
@@ -35,7 +42,7 @@ const ModalContent: React.FC<IModalContentProps> = ({ deepDiveFrom }) => {
   }, [deepDiveFrom]);
 
   useEffect(() => {
-    if (explain !== "") {
+    if (explain !== "" && articles.length === 0) {
       axios
         .post(process.env.API_ROUTE + "/deepDive/", {
           context: explain,
@@ -43,6 +50,12 @@ const ModalContent: React.FC<IModalContentProps> = ({ deepDiveFrom }) => {
         })
         .then((res) => {
           setArticles(res.data.slice(0, 4));
+          writeCache("nobel-deep-dive", {
+            response: {
+              context: explain,
+              data: res.data.slice(0, 4),
+            },
+          });
         })
         .catch((err) => {
           console.log(err);
@@ -91,6 +104,10 @@ const ModalContent: React.FC<IModalContentProps> = ({ deepDiveFrom }) => {
         alignItems: "center",
         gap: 5,
         boxShadow: "0px 0px 4px rgba(125, 125, 125, 0.75)",
+        overflowY: "scroll",
+        msOverflowStyle: "none",
+        scrollbarWidth: "none",
+        "&::-webkit-scrollbar": { display: "none" },
       }}
     >
       <Box
@@ -134,31 +151,37 @@ const ModalContent: React.FC<IModalContentProps> = ({ deepDiveFrom }) => {
           </Typography>
         </ContentSection>
       )}
-      <ContentSection
-        title="Deep Dive based on"
-        icon={<Microscope size={24} color="white" />}
-        canExpand={false}
-      >
-        <Box
+      {deepDiveFrom !== "explain" && (
+        <ContentSection
+          title="Deep Dive based on"
+          icon={<Microscope size={24} color="white" />}
+          canExpand={false}
           sx={{
-            marginLeft: 2,
+            flexDirection: "row",
           }}
+          fullWidth={true}
         >
-          <RelatedArticles
-            fullWidth={true}
-            clickable={false}
-            paper={{
-              title: document.title,
-              isOpenAccess: true,
-              openAccessPdf: {
-                url: window.location.href,
-              },
-              url: window.location.href,
+          <Box
+            sx={{
+              marginLeft: 2,
             }}
-            iconSize={"30px"}
-          />
-        </Box>
-      </ContentSection>
+          >
+            <RelatedArticles
+              fullWidth={true}
+              clickable={false}
+              paper={{
+                title: document.title,
+                isOpenAccess: true,
+                openAccessPdf: {
+                  url: window.location.href,
+                },
+                url: window.location.href,
+              }}
+              iconSize={"30px"}
+            />
+          </Box>
+        </ContentSection>
+      )}
       <ContentSection canExpand={false}>
         <Box
           sx={{
@@ -183,7 +206,6 @@ const ModalContent: React.FC<IModalContentProps> = ({ deepDiveFrom }) => {
               display: "flex",
               flexWrap: "wrap",
               gap: 2,
-              width: "100%",
               justifyContent: "space-between",
             }}
           >
@@ -204,3 +226,6 @@ const ModalContent: React.FC<IModalContentProps> = ({ deepDiveFrom }) => {
 };
 
 export default ModalContent;
+function writeCache(arg0: string, arg1: { response: any }) {
+  throw new Error("Function not implemented.");
+}
