@@ -242,7 +242,7 @@ const Content = () => {
               }}
             >
               <TooltipIcon
-                tooltip="Feedback"
+                tooltip="Send Feedback"
                 sx={{
                   marginRight: "4px",
                 }}
