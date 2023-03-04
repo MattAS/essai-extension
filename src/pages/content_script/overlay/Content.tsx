@@ -176,7 +176,7 @@ const Content = () => {
                   gap: 2,
                 }}
               >
-                <TooltipIcon tooltip="Search">
+                <TooltipIcon tooltip="Enhance Search">
                   <EnhancedSearch
                     color="white"
                     size={25}

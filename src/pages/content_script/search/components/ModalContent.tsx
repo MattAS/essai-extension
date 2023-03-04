@@ -135,6 +135,7 @@ const ModalContent: React.FC<IModalContentProps> = ({ inputValue }) => {
             color: "white",
             padding: 0,
             paddingX: 1,
+            paddingRight: 0,
             fontSize: 14,
             fontFamily: "Inter, sans-serif",
             fontWeight: 500,
@@ -161,7 +162,12 @@ const ModalContent: React.FC<IModalContentProps> = ({ inputValue }) => {
           }}
           startAdornment={<EnhancedSearch color="white" size={25} />}
           endAdornment={
-            <IconButton onClick={fulfillRequest}>
+            <IconButton
+              onClick={fulfillRequest}
+              sx={{
+                padding: 0,
+              }}
+            >
               <ArrowRight
                 color={input.trim() === "" ? "#8386B7" : "white"}
                 size={25}
