@@ -192,7 +192,7 @@ const Content = () => {
                     onClick={() => setIsOpenWindow("summarize")}
                   />
                 </TooltipIcon>
-                <TooltipIcon tooltip="Deep Dive - Coming Soon">
+                <TooltipIcon tooltip="Deep Dive">
                   <Microscope
                     size={25}
                     color={"white"}

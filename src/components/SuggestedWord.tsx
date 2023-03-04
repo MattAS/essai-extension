@@ -11,6 +11,7 @@ import RelatedArticles from "./RelatedArticles";
 interface ISuggestedWordProps {
   word: string;
   definition: string;
+  field: string;
   opened: boolean;
   setOpened: () => void;
 }
@@ -18,6 +19,7 @@ interface ISuggestedWordProps {
 const SuggestedWord: React.FC<ISuggestedWordProps> = ({
   word,
   definition,
+  field,
   opened,
   setOpened,
 }) => {
@@ -69,6 +71,7 @@ const SuggestedWord: React.FC<ISuggestedWordProps> = ({
         axios
           .post(process.env.API_ROUTE + "/paper/by/keyword/batch", {
             keywords: [word],
+            field: field,
           })
           .then((res) => {
             setPapers(res.data[0].papers);

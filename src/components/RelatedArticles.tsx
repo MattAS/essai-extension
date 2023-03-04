@@ -2,7 +2,12 @@ import { Box, Typography } from "@mui/material";
 import React, { useMemo } from "react";
 import FaviconIcon from "./FaviconIcon";
 
-const RelatedArticles = ({ paper }: any) => {
+const RelatedArticles = ({
+  paper,
+  clickable = true,
+  fullWidth = false,
+  iconSize = "40px",
+}: any) => {
   //Get domain of link
   const [domain, title, openAccess, url] = useMemo(() => {
     const title = paper.title;
@@ -27,10 +32,10 @@ const RelatedArticles = ({ paper }: any) => {
         flexDirection: "row",
         gap: 2,
         alignItems: "center",
-        width: "40%",
+        width: fullWidth ? "95%" : "40%",
         "&:hover": {
-          backgroundColor: "rgba(129, 129, 129, 0.28)",
-          cursor: "pointer",
+          backgroundColor: clickable ? "rgba(129, 129, 129, 0.28)" : "unset",
+          cursor: clickable ? "pointer" : "default",
           textDecoration: "none",
         },
         "&:focus": {
@@ -42,19 +47,19 @@ const RelatedArticles = ({ paper }: any) => {
         padding: 1.5,
         borderRadius: 2,
       }}
-      component="a"
+      component={clickable ? "a" : "div"}
       href={url}
       target="_blank"
     >
-      <FaviconIcon domain={domain} openAccess={true} />
+      <FaviconIcon domain={domain} openAccess={true} iconSize={iconSize} />
       <Typography
         textOverflow={"ellipsis"}
         sx={{
-          WebkitLineClamp: 2,
+          WebkitLineClamp: fullWidth ? 1 : 2,
           overflow: "hidden",
           WebkitBoxOrient: "vertical",
           display: "-webkit-box",
-          color: "white",
+          color: "#9D9D9D",
         }}
       >
         {title}
