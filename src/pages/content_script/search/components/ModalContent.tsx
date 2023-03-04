@@ -144,12 +144,23 @@ const ModalContent: React.FC<IModalContentProps> = ({ inputValue }) => {
             "&:focus": {
               outline: "none",
               borderBottom: 0,
+              border: 0,
+              borderColor: "transparent",
             },
             "&:after": {
               borderBottom: 0,
+              border: 0,
+              borderColor: "transparent",
             },
-            "&:hover": {
+            "&:before": {
               borderBottom: 0,
+              border: 0,
+              borderColor: "transparent",
+            },
+            "&:hover fieldset": {
+              borderBottom: 0,
+              border: 0,
+              borderColor: "transparent",
             },
             width: "100%",
             display: "flex",
