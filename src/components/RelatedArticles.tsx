@@ -30,9 +30,9 @@ const RelatedArticles = ({
         all: "unset",
         display: "flex",
         flexDirection: "row",
-        gap: 2,
+        gap: 1.5,
         alignItems: "center",
-        width: fullWidth ? "95%" : "46%",
+        width: fullWidth ? "95%" : "43%",
         "&:hover": {
           backgroundColor: clickable ? "rgba(129, 129, 129, 0.28)" : "unset",
           cursor: clickable ? "pointer" : "default",
