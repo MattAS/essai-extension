@@ -130,10 +130,9 @@ const ModalContent: React.FC<IModalContentProps> = ({ deepDiveFrom }) => {
       </Box>
       <Box
         sx={{
-          width: "98%",
           display: "flex",
           flexDirection: "column",
-          gap: 3,
+          gap: 2,
           margin: 0,
           padding: 0,
           overflowY: "scroll",
@@ -219,7 +218,7 @@ const ModalContent: React.FC<IModalContentProps> = ({ deepDiveFrom }) => {
               sx={{
                 display: "flex",
                 flexWrap: "wrap",
-                gap: 2,
+                gap: 1,
                 justifyContent: "space-between",
               }}
             >

@@ -26,7 +26,6 @@ const ContentSection: React.FC<IContentSectionProps> = ({
       sx={{
         display: "flex",
         flexDirection: "column",
-        width: "98%",
         backgroundColor: "rgba(255,255,255,0.05)",
         padding: 3,
         minHeight: "fit-content",
