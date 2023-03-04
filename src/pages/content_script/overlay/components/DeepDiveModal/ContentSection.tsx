@@ -7,6 +7,7 @@ interface IContentSectionProps {
   icon: React.ReactNode;
   canExpand: boolean;
   children: React.ReactNode | React.ReactNode[];
+  expandCallback?: () => void;
 }
 
 const ContentSection: React.FC<IContentSectionProps> = ({
@@ -14,6 +15,7 @@ const ContentSection: React.FC<IContentSectionProps> = ({
   icon,
   canExpand,
   children,
+  expandCallback,
 }) => {
   return (
     <Box
@@ -24,7 +26,6 @@ const ContentSection: React.FC<IContentSectionProps> = ({
         width: "98%",
         backgroundColor: "rgba(255,255,255,0.05)",
         padding: 3,
-        maxHeight: "20vh",
         minHeight: "fit-content",
         borderRadius: 4,
       }}
@@ -59,6 +60,7 @@ const ContentSection: React.FC<IContentSectionProps> = ({
                 backgroundColor: "transparent",
               },
             }}
+            onClick={expandCallback}
           >
             <Maximize2 size={20} color="white" />
           </IconButton>

@@ -1,9 +1,11 @@
 import { Box, Typography } from "@mui/material";
 import axios from "axios";
 import { Microscope } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import NobelLogoSquare from "../../../../../components/Icons/NobelLogoSquare";
 import TextQuestion from "../../../../../components/Icons/TextQuestion";
+import LoadingArticles from "../../../../../components/loading/LoadingArticles";
+import RelatedArticles from "../../../../../components/RelatedArticles";
 import { readCache } from "../../../../../utils/cache";
 import ContentSection from "./ContentSection";
 
@@ -13,45 +15,66 @@ interface IModalContentProps {
 
 const ModalContent: React.FC<IModalContentProps> = ({ deepDiveFrom }) => {
   const [explain, setExplain] = useState<string>("");
-  const [nextSteps, setNextSteps] = useState<string[]>([]);
-  const [deepDiveContent, setDeepDiveContent] = useState<string[]>([]);
+  const [articles, setArticles] = useState<any[]>([]);
+  const [expanded, setExpanded] = useState<boolean>(false);
+
   useEffect(() => {
-    let context = "";
     if (deepDiveFrom === "explain") {
       readCache("nobel-highlight").then((result) => {
+        let context = "";
+        console.log(result);
         if (result["nobel-highlight"] && result["nobel-highlight"].response) {
           setExplain(result["nobel-highlight"].response);
-          context = result["nobel-highlight"].response;
-          return;
+        } else {
+          context = document.body.innerText.slice(100, 5100);
         }
       });
+    } else {
+      setExplain(document.body.innerText.slice(100, 5100));
     }
-
-    if (context === "") {
-      context = document.body.innerText.slice(0, 5000);
-    }
-
-    if (context === "") {
-      return;
-    }
-
-    axios
-      .post(process.env.API_ROUTE + "/deepDive", {
-        context: context,
-      })
-      .then((res) => {
-        console.log(res.data);
-        setNextSteps(res.data.steps);
-        axios
-          .post(process.env.API_ROUTE + "/paper/by/keyword/batch", {
-            keywords: res.data.keywords,
-          })
-          .then((res) => {
-            const papers = res.data.map((paperRes: any) => paperRes.papers[0]);
-            setDeepDiveContent(res.data.result);
-          });
-      });
   }, [deepDiveFrom]);
+
+  useEffect(() => {
+    if (explain !== "") {
+      axios
+        .post(process.env.API_ROUTE + "/deepDive/", {
+          context: explain,
+          excludeURL: window.location.href,
+        })
+        .then((res) => {
+          setArticles(res.data.slice(0, 4));
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  }, [explain]);
+
+  const expandedCallback = () => {
+    setExpanded(!expanded);
+  };
+
+  const textRef = useRef<HTMLDivElement>(null);
+  const [isMaxLinesReached, setIsMaxLinesReached] = useState(false);
+
+  useEffect(() => {
+    setTimeout(() => {
+      const element = textRef.current;
+      if (element) {
+        const computedStyle = window.getComputedStyle(element);
+        const lineHeight = parseFloat(computedStyle.lineHeight);
+        const fontSize = parseFloat(computedStyle.fontSize);
+
+        console.log(lineHeight);
+
+        const lines: number = element.offsetHeight / (lineHeight * 3);
+
+        if (lines > 1) {
+          setIsMaxLinesReached(true);
+        }
+      }
+    }, 100);
+  }, []);
 
   return (
     <Box
@@ -92,38 +115,21 @@ const ModalContent: React.FC<IModalContentProps> = ({ deepDiveFrom }) => {
           Nobel
         </Typography>
       </Box>
-      {deepDiveFrom === "explain" ? (
+      {deepDiveFrom === "explain" && (
         <ContentSection
           title="Explain & Rephrase"
           icon={<TextQuestion size={24} color="white" />}
-          canExpand={true}
+          canExpand={isMaxLinesReached}
+          expandCallback={expandedCallback}
         >
           <Typography
+            ref={textRef}
             sx={{
               color: "#9D9D9D",
               fontSize: 15,
               display: "-webkit-box",
               overflow: "hidden",
-              WebkitLineClamp: 3,
-              WebkitBoxOrient: "vertical",
-            }}
-          >
-            {explain}
-          </Typography>
-        </ContentSection>
-      ) : (
-        <ContentSection
-          title="Deep Dive"
-          icon={<Microscope size={24} color="white" />}
-          canExpand={false}
-        >
-          <Typography
-            sx={{
-              color: "#9D9D9D",
-              fontSize: 15,
-              display: "-webkit-box",
-              overflow: "hidden",
-              WebkitLineClamp: 3,
+              WebkitLineClamp: expanded ? "unset" : 3,
               WebkitBoxOrient: "vertical",
             }}
           >
@@ -131,6 +137,29 @@ const ModalContent: React.FC<IModalContentProps> = ({ deepDiveFrom }) => {
           </Typography>
         </ContentSection>
       )}
+      <ContentSection
+        title="Deep Dive"
+        icon={<Microscope size={24} color="white" />}
+        canExpand={false}
+      >
+        <Box
+          sx={{
+            display: "flex",
+            flexWrap: "wrap",
+            gap: 2,
+            width: "100%",
+            justifyContent: "space-between",
+          }}
+        >
+          {articles.length === 0 ? (
+            <LoadingArticles numArticles={4} />
+          ) : (
+            articles.map((article, index) => {
+              return <RelatedArticles key={index} paper={article.papers[0]} />;
+            })
+          )}
+        </Box>
+      </ContentSection>
     </Box>
   );
 };

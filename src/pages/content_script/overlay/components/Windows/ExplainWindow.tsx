@@ -35,7 +35,6 @@ const ExplainWindow = React.forwardRef<Ref, IExplainWindowProps>(
               text: selection,
             })
             .then((response) => {
-              console.log(response);
               writeToCache("nobel-highlight", {
                 response: response.data.summary,
                 selection: selection,
@@ -51,12 +50,14 @@ const ExplainWindow = React.forwardRef<Ref, IExplainWindowProps>(
 
     const DeepDiveButton = useMemo(() => {
       return (
-        <Button onClick={() => buttonCallback("explain")}>
-          <Microscope size={20} color="white" />
-          Deep Dive
-        </Button>
+        summary !== "" && (
+          <Button onClick={() => buttonCallback("explain")}>
+            <Microscope size={20} color="white" />
+            Deep Dive
+          </Button>
+        )
       );
-    }, [buttonCallback]);
+    }, [buttonCallback, summary]);
 
     return (
       <Window
