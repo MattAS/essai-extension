@@ -46,7 +46,7 @@ const RelatedArticles = ({ paper }: any) => {
       href={url}
       target="_blank"
     >
-      <FaviconIcon domain={domain} openAccess={openAccess} />
+      <FaviconIcon domain={domain} openAccess={true} />
       <Typography
         textOverflow={"ellipsis"}
         sx={{
