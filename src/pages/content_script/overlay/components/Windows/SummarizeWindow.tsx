@@ -2,7 +2,6 @@ import axios from "axios";
 import { FileQuestion } from "lucide-react";
 import React from "react";
 import { useEffect, useState } from "react";
-import { readCache, writeToCache } from "../../../../../utils/cache";
 import Window from "./Window";
 
 interface ISummarizeWindowProps {}
@@ -17,7 +16,7 @@ const SummarizeWindow = React.forwardRef<Ref, ISummarizeWindowProps>(
       setSummary("");
       const url = window.location.href;
       axios
-        .post("https://essai-go-api-le4jqewulq-ue.a.run.app/api/summary/long", {
+        .post(process.env.API_ROUTE + "/summary/long", {
           url,
         })
         .then((response) => {

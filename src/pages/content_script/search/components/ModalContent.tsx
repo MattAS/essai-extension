@@ -31,9 +31,11 @@ const ModalContent: React.FC<IModalContentProps> = ({ inputValue }) => {
     getCache();
   }, []);
 
+  console.log(process.env.API_ROUTE);
+
   const getContent = async () => {
     const res = await axios.post(
-      "https://nobel-go-api-le4jqewulq-ue.a.run.app/api/keyword/chat/by/question",
+      process.env.API_ROUTE + "/keyword/chat/by/question",
       {
         question: input,
       }

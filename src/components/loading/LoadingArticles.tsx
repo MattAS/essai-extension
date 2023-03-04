@@ -1,20 +1,25 @@
 import { Box, Skeleton } from "@mui/material";
 
-const LoadingArticles = () => {
+interface ILoadingArticlesProps {
+  numArticles: number;
+}
+
+const LoadingArticles: React.FC<ILoadingArticlesProps> = ({ numArticles }) => {
   return (
     <Box
       sx={{
         display: "flex",
         flexDirection: "row",
         width: "100%",
-        justifyContent: "space-between",
+        gap: 2,
+        flexWrap: "wrap",
       }}
     >
-      {Array.from(Array(2).keys()).map((i) => (
+      {Array.from(Array(numArticles).keys()).map((i) => (
         <Skeleton
           key={`Article-${i}`}
           variant="rectangular"
-          width="45%"
+          width="49%"
           height="8vh"
           sx={{
             backgroundColor: "rgba(255, 255, 255, 0.11)",

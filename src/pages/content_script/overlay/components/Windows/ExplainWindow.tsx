@@ -31,12 +31,9 @@ const ExplainWindow = React.forwardRef<Ref, IExplainWindowProps>(
           return;
         } else {
           axios
-            .post(
-              "https://nobel-go-api-le4jqewulq-ue.a.run.app/api/summary/highlight",
-              {
-                text: selection,
-              }
-            )
+            .post(process.env.API_ROUTE + "/summary/highlight", {
+              text: selection,
+            })
             .then((response) => {
               console.log(response);
               writeToCache("nobel-highlight", {

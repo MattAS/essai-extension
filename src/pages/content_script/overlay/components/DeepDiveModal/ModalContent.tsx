@@ -36,20 +36,16 @@ const ModalContent: React.FC<IModalContentProps> = ({ deepDiveFrom }) => {
     }
 
     axios
-      .post("https://nobel-go-api-le4jqewulq-ue.a.run.app/api/deepDive", {
+      .post(process.env.API_ROUTE + "/deepDive", {
         context: context,
       })
       .then((res) => {
         console.log(res.data);
         setNextSteps(res.data.steps);
         axios
-          .post(
-            "https://essai-go-api-le4jqewulq-ue.a.run.app/api/paper/by/keyword/batch",
-            {
-              keywords: res.data.keywords,
-              searchForMoreKeywords: false,
-            }
-          )
+          .post(process.env.API_ROUTE + "/paper/by/keyword/batch", {
+            keywords: res.data.keywords,
+          })
           .then((res) => {
             const papers = res.data.map((paperRes: any) => paperRes.papers[0]);
             setDeepDiveContent(res.data.result);

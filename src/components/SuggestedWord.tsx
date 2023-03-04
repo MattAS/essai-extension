@@ -5,6 +5,7 @@ import React, { useEffect, useState } from "react";
 import { readCache } from "../utils/cache";
 import LoadingArticles from "./loading/LoadingArticles";
 import LoadingText from "./loading/LoadingText";
+import QueryLinks from "./QueryLinks";
 import RelatedArticles from "./RelatedArticles";
 
 interface ISuggestedWordProps {
@@ -44,12 +45,9 @@ const SuggestedWord: React.FC<ISuggestedWordProps> = ({
     if (openArticles) {
       if (searchQueries.length === 0) {
         axios
-          .post(
-            "https://nobel-go-api-le4jqewulq-ue.a.run.app/api/keyword/queries",
-            {
-              keyword: word,
-            }
-          )
+          .post(process.env.API_ROUTE + "/keyword/queries", {
+            keyword: word,
+          })
           .then((res) => {
             const queries = res.data.result.map((result: any) => {
               return result.queries
@@ -69,12 +67,9 @@ const SuggestedWord: React.FC<ISuggestedWordProps> = ({
       }
       if (papers.length === 0) {
         axios
-          .post(
-            "https://essai-go-api-le4jqewulq-ue.a.run.app/api/paper/by/keyword/batch",
-            {
-              keywords: [word],
-            }
-          )
+          .post(process.env.API_ROUTE + "/paper/by/keyword/batch", {
+            keywords: [word],
+          })
           .then((res) => {
             setPapers(res.data[0].papers);
           })
@@ -201,10 +196,11 @@ const SuggestedWord: React.FC<ISuggestedWordProps> = ({
                 flexDirection: "row",
                 gap: 2,
                 justifyContent: "space-between",
+                width: "100%",
               }}
             >
               {papers.length === 0 ? (
-                <LoadingArticles />
+                <LoadingArticles numArticles={2} />
               ) : (
                 papers.map((link: any, index: number) => {
                   return (
@@ -236,31 +232,15 @@ const SuggestedWord: React.FC<ISuggestedWordProps> = ({
               flexWrap={"wrap"}
               sx={{
                 display: "flex",
-                flexDirection: "column",
-                gap: 2,
                 justifyContent: "space-between",
+                gap: 1.5,
               }}
             >
               {searchQueries.length === 0 ? (
-                <LoadingText numLines={5} variant="body1" />
+                <LoadingArticles numArticles={4} />
               ) : (
                 searchQueries.map((query: string, index: number) => (
-                  <Typography
-                    key={`query-${index}`}
-                    sx={{
-                      color: "white",
-                      cursor: "pointer",
-                      textDecoration: "underline",
-                    }}
-                    onClick={() =>
-                      window.open(
-                        `https://www.google.com/search?q=${query}`,
-                        "_blank"
-                      )
-                    }
-                  >
-                    {query}
-                  </Typography>
+                  <QueryLinks query={query} key={`query-${index}`} />
                 ))
               )}
             </Box>
