@@ -138,10 +138,16 @@ const ModalContent: React.FC<IModalContentProps> = ({ inputValue }) => {
             fontSize: 14,
             fontFamily: "Inter, sans-serif",
             fontWeight: 500,
+            outline: "none",
+            borderBottom: 0,
             "&:focus": {
               outline: "none",
+              borderBottom: 0,
             },
             "&:after": {
+              borderBottom: 0,
+            },
+            "&:hover": {
               borderBottom: 0,
             },
             width: "100%",

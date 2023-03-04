@@ -1,4 +1,4 @@
 export const allowedList = [
   'https://www.medium.com/*',
-  'https://www.wikipedia.com/*',
+  'https://www.wikipedia.org/*',
 ]

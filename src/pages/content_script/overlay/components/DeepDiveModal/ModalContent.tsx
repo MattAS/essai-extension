@@ -171,14 +171,11 @@ const ModalContent: React.FC<IModalContentProps> = ({ deepDiveFrom }) => {
             sx={{
               flexDirection: "row",
               paddingY: 1,
+              gap: "unset",
             }}
             fullWidth={true}
           >
-            <Box
-              sx={{
-                marginLeft: 2,
-              }}
-            >
+            <Box>
               <RelatedArticles
                 fullWidth={true}
                 clickable={false}

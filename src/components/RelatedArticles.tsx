@@ -32,6 +32,7 @@ const RelatedArticles = ({
         flexDirection: "row",
         gap: 1.5,
         alignItems: "center",
+        flexGrow: 1,
         width: fullWidth ? "95%" : "43%",
         "&:hover": {
           backgroundColor: clickable ? "rgba(129, 129, 129, 0.28)" : "unset",
