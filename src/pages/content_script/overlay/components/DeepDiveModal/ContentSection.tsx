@@ -9,6 +9,7 @@ interface IContentSectionProps {
   children: React.ReactNode | React.ReactNode[];
   expandCallback?: () => void;
   sx?: any;
+  fullWidth?: boolean;
 }
 
 const ContentSection: React.FC<IContentSectionProps> = ({
@@ -17,18 +18,20 @@ const ContentSection: React.FC<IContentSectionProps> = ({
   canExpand,
   children,
   expandCallback,
+  fullWidth,
   sx,
 }) => {
   return (
     <Box
       sx={{
         display: "flex",
-        flexDirection: "row",
+        flexDirection: "column",
         width: "98%",
         backgroundColor: "rgba(255,255,255,0.05)",
         padding: 3,
         minHeight: "fit-content",
         borderRadius: 4,
+        gap: 2,
         ...sx,
       }}
     >
@@ -37,12 +40,17 @@ const ContentSection: React.FC<IContentSectionProps> = ({
           display: "flex",
           gap: 2,
           alignItems: "center",
-          justifyContent: "space-between",
-          width: "fit-content",
+          width: fullWidth ? "fit-content" : "100%",
         }}
       >
         {icon && title && (
-          <Box sx={{ display: "flex", gap: 2, width: "fit-content" }}>
+          <Box
+            sx={{
+              display: "flex",
+              gap: 2,
+              width: fullWidth ? "fit-content" : "100%",
+            }}
+          >
             {icon}
             <Typography
               sx={{
