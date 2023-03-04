@@ -139,6 +139,7 @@ const ModalContent: React.FC<IModalContentProps> = ({ deepDiveFrom }) => {
           overflowY: "scroll",
           msOverflowStyle: "none",
           scrollbarWidth: "none",
+          "&::-webkit-scrollbar": { display: "none" },
         }}
       >
         {deepDiveFrom === "explain" && (
