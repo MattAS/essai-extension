@@ -3,11 +3,12 @@ import { Maximize, Maximize2 } from "lucide-react";
 import React from "react";
 
 interface IContentSectionProps {
-  title: string;
-  icon: React.ReactNode;
+  title?: string;
+  icon?: React.ReactNode;
   canExpand: boolean;
   children: React.ReactNode | React.ReactNode[];
   expandCallback?: () => void;
+  sx?: any;
 }
 
 const ContentSection: React.FC<IContentSectionProps> = ({
@@ -16,18 +17,19 @@ const ContentSection: React.FC<IContentSectionProps> = ({
   canExpand,
   children,
   expandCallback,
+  sx,
 }) => {
   return (
     <Box
       sx={{
         display: "flex",
-        flexDirection: "column",
-        gap: "2vh",
+        flexDirection: "row",
         width: "98%",
         backgroundColor: "rgba(255,255,255,0.05)",
         padding: 3,
         minHeight: "fit-content",
         borderRadius: 4,
+        ...sx,
       }}
     >
       <Box
@@ -36,21 +38,26 @@ const ContentSection: React.FC<IContentSectionProps> = ({
           gap: 2,
           alignItems: "center",
           justifyContent: "space-between",
-          width: "100%",
+          width: "fit-content",
         }}
       >
-        <Box sx={{ display: "flex", gap: 2 }}>
-          {icon}
-          <Typography
-            sx={{
-              color: "white",
-              fontWeight: "bold",
-              fontSize: 16,
-            }}
-          >
-            {title}
-          </Typography>
-        </Box>
+        {icon && title && (
+          <Box sx={{ display: "flex", gap: 2, width: "fit-content" }}>
+            {icon}
+            <Typography
+              sx={{
+                color: "white",
+                fontWeight: "bold",
+                fontSize: 16,
+                // Set no wrap
+                width: "fit-content",
+                whiteSpace: "nowrap",
+              }}
+            >
+              {title}
+            </Typography>
+          </Box>
+        )}
         {canExpand ? (
           <IconButton
             sx={{

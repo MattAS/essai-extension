@@ -31,8 +31,6 @@ const ModalContent: React.FC<IModalContentProps> = ({ inputValue }) => {
     getCache();
   }, []);
 
-  console.log(process.env.API_ROUTE);
-
   const getContent = async () => {
     const res = await axios.post(
       process.env.API_ROUTE + "/keyword/chat/by/question",
@@ -211,6 +209,7 @@ const ModalContent: React.FC<IModalContentProps> = ({ inputValue }) => {
                 setOpened={() => handleOpen(index)}
                 word={suggestion.keyword}
                 definition={suggestion.definition}
+                field={suggestion.field}
               />
             ))}
           </Box>

@@ -63,9 +63,6 @@ const ModalContent: React.FC<IModalContentProps> = ({ deepDiveFrom }) => {
       if (element) {
         const computedStyle = window.getComputedStyle(element);
         const lineHeight = parseFloat(computedStyle.lineHeight);
-        const fontSize = parseFloat(computedStyle.fontSize);
-
-        console.log(lineHeight);
 
         const lines: number = element.offsetHeight / (lineHeight * 3);
 
@@ -138,26 +135,68 @@ const ModalContent: React.FC<IModalContentProps> = ({ deepDiveFrom }) => {
         </ContentSection>
       )}
       <ContentSection
-        title="Deep Dive"
+        title="Deep Dive based on"
         icon={<Microscope size={24} color="white" />}
         canExpand={false}
       >
         <Box
           sx={{
-            display: "flex",
-            flexWrap: "wrap",
-            gap: 2,
-            width: "100%",
-            justifyContent: "space-between",
+            marginLeft: 2,
           }}
         >
-          {articles.length === 0 ? (
-            <LoadingArticles numArticles={4} />
-          ) : (
-            articles.map((article, index) => {
-              return <RelatedArticles key={index} paper={article.papers[0]} />;
-            })
-          )}
+          <RelatedArticles
+            fullWidth={true}
+            clickable={false}
+            paper={{
+              title: document.title,
+              isOpenAccess: true,
+              openAccessPdf: {
+                url: window.location.href,
+              },
+              url: window.location.href,
+            }}
+            iconSize={"30px"}
+          />
+        </Box>
+      </ContentSection>
+      <ContentSection canExpand={false}>
+        <Box
+          sx={{
+            gap: 2,
+            display: "flex",
+            flexDirection: "column",
+          }}
+        >
+          <Typography
+            sx={{
+              color: "white",
+              textTransform: "uppercase",
+              fontWeight: "bold",
+              fontSize: 12,
+              marginLeft: 2,
+            }}
+          >
+            Related Articles and papers
+          </Typography>
+          <Box
+            sx={{
+              display: "flex",
+              flexWrap: "wrap",
+              gap: 2,
+              width: "100%",
+              justifyContent: "space-between",
+            }}
+          >
+            {articles.length === 0 ? (
+              <LoadingArticles numArticles={4} />
+            ) : (
+              articles.map((article, index) => {
+                return (
+                  <RelatedArticles key={index} paper={article.papers[0]} />
+                );
+              })
+            )}
+          </Box>
         </Box>
       </ContentSection>
     </Box>
