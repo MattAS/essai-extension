@@ -19,7 +19,7 @@ const LoadingArticles: React.FC<ILoadingArticlesProps> = ({ numArticles }) => {
         <Skeleton
           key={`Article-${i}`}
           variant="rectangular"
-          width="49%"
+          width={window.innerWidth < 1040 ? "100%" : "48%"}
           height="8vh"
           sx={{
             backgroundColor: "rgba(255, 255, 255, 0.11)",
