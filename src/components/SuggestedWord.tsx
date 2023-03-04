@@ -138,6 +138,7 @@ const SuggestedWord: React.FC<ISuggestedWordProps> = ({
               textOverflow: "ellipsis",
               flexGrow: 1,
               color: "white",
+              width: "100%",
             }}
           >
             {definition}
@@ -235,8 +236,9 @@ const SuggestedWord: React.FC<ISuggestedWordProps> = ({
               flexWrap={"wrap"}
               sx={{
                 display: "flex",
+                gap: 2,
                 justifyContent: "space-between",
-                gap: 1.5,
+                alignItems: "center",
               }}
             >
               {searchQueries.length === 0 ? (

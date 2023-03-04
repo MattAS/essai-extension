@@ -17,7 +17,7 @@ const QueryLinks: React.FC<IQueryLinksProps> = ({ query }) => {
           cursor: "pointer",
           backgroundColor: "#151634",
         },
-        width: "45%",
+        width: window.innerWidth <= 1040 ? "100%" : "42%",
         padding: 2,
         paddingY: 2,
         borderRadius: 3,
