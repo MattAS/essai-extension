@@ -101,7 +101,6 @@ const ModalContent: React.FC<IModalContentProps> = ({ deepDiveFrom }) => {
         padding: 4,
         paddingX: 6,
         flexDirection: "column",
-        alignItems: "center",
         gap: 5,
         boxShadow: "0px 0px 4px rgba(125, 125, 125, 0.75)",
         overflowY: "scroll",
@@ -129,98 +128,113 @@ const ModalContent: React.FC<IModalContentProps> = ({ deepDiveFrom }) => {
           Nobel
         </Typography>
       </Box>
-      {deepDiveFrom === "explain" && (
-        <ContentSection
-          title="Explain & Rephrase"
-          icon={<TextQuestion size={24} color="white" />}
-          canExpand={isMaxLinesReached}
-          expandCallback={expandedCallback}
-        >
-          <Typography
-            ref={textRef}
-            sx={{
-              color: "#9D9D9D",
-              fontSize: 15,
-              display: "-webkit-box",
-              overflow: "hidden",
-              WebkitLineClamp: expanded ? "unset" : 3,
-              WebkitBoxOrient: "vertical",
-            }}
+      <Box
+        sx={{
+          width: "98%",
+          display: "flex",
+          flexDirection: "column",
+          gap: 3,
+          margin: 0,
+          padding: 0,
+          overflowY: "scroll",
+          msOverflowStyle: "none",
+          scrollbarWidth: "none",
+        }}
+      >
+        {deepDiveFrom === "explain" && (
+          <ContentSection
+            title="Explain & Rephrase"
+            icon={<TextQuestion size={24} color="white" />}
+            canExpand={isMaxLinesReached}
+            expandCallback={expandedCallback}
           >
-            {explain}
-          </Typography>
-        </ContentSection>
-      )}
-      {deepDiveFrom !== "explain" && (
-        <ContentSection
-          title="Deep Dive based on"
-          icon={<Microscope size={24} color="white" />}
-          canExpand={false}
-          sx={{
-            flexDirection: "row",
-          }}
-          fullWidth={true}
-        >
-          <Box
-            sx={{
-              marginLeft: 2,
-            }}
-          >
-            <RelatedArticles
-              fullWidth={true}
-              clickable={false}
-              paper={{
-                title: document.title,
-                isOpenAccess: true,
-                openAccessPdf: {
-                  url: window.location.href,
-                },
-                url: window.location.href,
+            <Typography
+              ref={textRef}
+              sx={{
+                color: "#9D9D9D",
+                fontSize: 15,
+                display: "-webkit-box",
+                overflow: "hidden",
+                WebkitLineClamp: expanded ? "unset" : 3,
+                WebkitBoxOrient: "vertical",
               }}
-              iconSize={"30px"}
-            />
-          </Box>
-        </ContentSection>
-      )}
-      <ContentSection canExpand={false}>
-        <Box
-          sx={{
-            gap: 2,
-            display: "flex",
-            flexDirection: "column",
-          }}
-        >
-          <Typography
+            >
+              {explain}
+            </Typography>
+          </ContentSection>
+        )}
+        {deepDiveFrom !== "explain" && (
+          <ContentSection
+            title="Deep Dive based on"
+            icon={<Microscope size={24} color="white" />}
+            canExpand={false}
             sx={{
-              color: "white",
-              textTransform: "uppercase",
-              fontWeight: "bold",
-              fontSize: 12,
-              marginLeft: 2,
+              flexDirection: "row",
+              paddingY: 1,
             }}
+            fullWidth={true}
           >
-            Related Articles and papers
-          </Typography>
+            <Box
+              sx={{
+                marginLeft: 2,
+              }}
+            >
+              <RelatedArticles
+                fullWidth={true}
+                clickable={false}
+                paper={{
+                  title: document.title,
+                  isOpenAccess: true,
+                  openAccessPdf: {
+                    url: window.location.href,
+                  },
+                  url: window.location.href,
+                }}
+                iconSize={"30px"}
+              />
+            </Box>
+          </ContentSection>
+        )}
+        <ContentSection canExpand={false}>
           <Box
             sx={{
-              display: "flex",
-              flexWrap: "wrap",
               gap: 2,
-              justifyContent: "space-between",
+              display: "flex",
+              flexDirection: "column",
             }}
           >
-            {articles.length === 0 ? (
-              <LoadingArticles numArticles={4} />
-            ) : (
-              articles.map((article, index) => {
-                return (
-                  <RelatedArticles key={index} paper={article.papers[0]} />
-                );
-              })
-            )}
+            <Typography
+              sx={{
+                color: "white",
+                textTransform: "uppercase",
+                fontWeight: "bold",
+                fontSize: 12,
+                marginLeft: 2,
+              }}
+            >
+              Related Articles and papers
+            </Typography>
+            <Box
+              sx={{
+                display: "flex",
+                flexWrap: "wrap",
+                gap: 2,
+                justifyContent: "space-between",
+              }}
+            >
+              {articles.length === 0 ? (
+                <LoadingArticles numArticles={4} />
+              ) : (
+                articles.map((article, index) => {
+                  return (
+                    <RelatedArticles key={index} paper={article.papers[0]} />
+                  );
+                })
+              )}
+            </Box>
           </Box>
-        </Box>
-      </ContentSection>
+        </ContentSection>
+      </Box>
     </Box>
   );
 };
