@@ -1,16 +1,16 @@
 import { Box, IconButton, Typography } from "@mui/material";
+import axios from "axios";
 import { Globe, Maximize2, Minimize2 } from "lucide-react";
 import React, { useEffect, useState } from "react";
+import { readCache } from "../utils/cache";
 import LoadingArticles from "./loading/LoadingArticles";
+import LoadingText from "./loading/LoadingText";
+import QueryLinks from "./QueryLinks";
 import RelatedArticles from "./RelatedArticles";
 
 interface ISuggestedWordProps {
   word: string;
   definition: string;
-  links: {
-    url: string;
-    title: string;
-  }[];
   opened: boolean;
   setOpened: () => void;
 }
@@ -18,11 +18,22 @@ interface ISuggestedWordProps {
 const SuggestedWord: React.FC<ISuggestedWordProps> = ({
   word,
   definition,
-  links,
   opened,
   setOpened,
 }) => {
   const [openArticles, setOpenArticles] = useState(false);
+  const [searchQueries, setSearchQueries] = useState<string[]>([]);
+  const [papers, setPapers] = useState<any[]>([]);
+
+  useEffect(() => {
+    const getCache = async () => {
+      const cache = await readCache("nobel-history");
+      if (cache["nobel-history"] && cache["nobel-history"]["searchQueries"]) {
+        setSearchQueries(cache["nobel-history"]["searchQueries"]);
+      }
+    };
+    getCache();
+  }, []);
 
   useEffect(() => {
     if (!opened) {
@@ -30,13 +41,52 @@ const SuggestedWord: React.FC<ISuggestedWordProps> = ({
     }
   }, [opened]);
 
+  useEffect(() => {
+    if (openArticles) {
+      if (searchQueries.length === 0) {
+        axios
+          .post(process.env.API_ROUTE + "/keyword/queries", {
+            keyword: word,
+          })
+          .then((res) => {
+            const queries = res.data.result.map((result: any) => {
+              return result.queries
+                .split("?")
+                .map((query: string) => {
+                  if (query !== "") {
+                    return query.trim() + "?";
+                  }
+                })
+                .filter((query: string) => query !== undefined);
+            });
+            setSearchQueries(queries);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
+      if (papers.length === 0) {
+        axios
+          .post(process.env.API_ROUTE + "/paper/by/keyword/batch", {
+            keywords: [word],
+          })
+          .then((res) => {
+            setPapers(res.data[0].papers);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
+    }
+  }, [openArticles]);
+
   const handleOpenArticles = () => {
     setOpened();
     setOpenArticles(!openArticles);
   };
 
-  const handleGoogleSearch = () => {
-    window.open(`https://www.google.com/search?q=${word}`, "_blank");
+  const handleGoogleSearch = (searchWord: string) => {
+    window.open(`https://www.google.com/search?q=${searchWord}`, "_blank");
   };
 
   return (
@@ -106,7 +156,7 @@ const SuggestedWord: React.FC<ISuggestedWordProps> = ({
               justifyContent: "space-between",
             }}
           >
-            <IconButton onClick={handleGoogleSearch}>
+            <IconButton onClick={() => handleGoogleSearch(word)}>
               <Globe size={20} color="white" />
             </IconButton>
             <IconButton onClick={handleOpenArticles}>
@@ -120,40 +170,82 @@ const SuggestedWord: React.FC<ISuggestedWordProps> = ({
         </Box>
       </Box>
       {opened && openArticles && (
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            gap: 2,
-            marginTop: 5,
-          }}
-        >
-          <Typography
-            sx={{
-              color: "white",
-              textTransform: "uppercase",
-              fontWeight: "bold",
-              fontSize: 12,
-            }}
-          >
-            related articles and papers
-          </Typography>
+        <>
           <Box
-            flexWrap={"wrap"}
             sx={{
               display: "flex",
-              flexDirection: "row",
+              flexDirection: "column",
               gap: 2,
-              justifyContent: "space-between",
+              marginTop: 5,
             }}
           >
-            {links.length === 0 ? (
-              <LoadingArticles />
-            ) : (
-              links.map((link) => <RelatedArticles paper={link} />)
-            )}
+            <Typography
+              sx={{
+                color: "white",
+                textTransform: "uppercase",
+                fontWeight: "bold",
+                fontSize: 12,
+              }}
+            >
+              related articles and papers
+            </Typography>
+            <Box
+              flexWrap={"wrap"}
+              sx={{
+                display: "flex",
+                flexDirection: "row",
+                gap: 2,
+                justifyContent: "space-between",
+                width: "100%",
+              }}
+            >
+              {papers.length === 0 ? (
+                <LoadingArticles numArticles={2} />
+              ) : (
+                papers.map((link: any, index: number) => {
+                  return (
+                    <RelatedArticles paper={link} key={`article-${index}`} />
+                  );
+                })
+              )}
+            </Box>
           </Box>
-        </Box>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              gap: 2,
+              marginTop: 5,
+            }}
+          >
+            <Typography
+              sx={{
+                color: "white",
+                textTransform: "uppercase",
+                fontWeight: "bold",
+                fontSize: 12,
+              }}
+            >
+              related search queries
+            </Typography>
+            <Box
+              flexWrap={"wrap"}
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+                gap: 1.5,
+              }}
+            >
+              {searchQueries.length === 0 ? (
+                <LoadingArticles numArticles={4} />
+              ) : (
+                searchQueries.map((query: string, index: number) => (
+                  <QueryLinks query={query} key={`query-${index}`} />
+                ))
+              )}
+            </Box>
+          </Box>
+        </>
       )}
     </Box>
   );

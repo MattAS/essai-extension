@@ -3,8 +3,8 @@ import axios from "axios";
 import { motion } from "framer-motion";
 import { Check } from "lucide-react";
 import React from "react";
-import Button from "../../../../components/Button";
-import NobelLogoSquare from "../../../../components/Icons/NobelLogoSquare";
+import Button from "../../../../../components/Button";
+import NobelLogoSquare from "../../../../../components/Icons/NobelLogoSquare";
 
 const FeedbackWindow = React.forwardRef(({}, ref) => {
   const height = window.innerHeight;

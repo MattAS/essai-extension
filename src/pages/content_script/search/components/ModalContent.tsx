@@ -15,7 +15,6 @@ interface IModalContentProps {
 }
 
 const ModalContent: React.FC<IModalContentProps> = ({ inputValue }) => {
-  console.log(inputValue);
   const [openedIdx, setOpenedIdx] = React.useState<number | null>(null);
   const [input, setInput] = React.useState<string>(inputValue);
   const [suggested, setSuggested] = React.useState<any>();
@@ -32,9 +31,11 @@ const ModalContent: React.FC<IModalContentProps> = ({ inputValue }) => {
     getCache();
   }, []);
 
+  console.log(process.env.API_ROUTE);
+
   const getContent = async () => {
     const res = await axios.post(
-      "https://essai-go-api-le4jqewulq-ue.a.run.app/api/keyword/by/question",
+      process.env.API_ROUTE + "/keyword/chat/by/question",
       {
         question: input,
       }
@@ -49,32 +50,9 @@ const ModalContent: React.FC<IModalContentProps> = ({ inputValue }) => {
     });
     setSuggested(suggestion);
     setIsLoading(false);
-    const keywords = res.data.result.map((keywords: any) => {
-      return keywords.keyword;
-    });
-    const paperRes = await axios.post(
-      "https://essai-go-api-le4jqewulq-ue.a.run.app/api/paper/by/keyword/batch",
-      {
-        keywords: keywords,
-        searchForMoreKeywords: false,
-      }
-    );
-    console.log(paperRes.data);
-    const newSuggestion = suggestion.map((suggestion: any, idx: number) => {
-      // Search for keyword in paperRes.data
-      const keywordResult = paperRes.data.find(
-        (item: any) => item.keyword === suggestion.keyword
-      );
-      return {
-        ...suggestion,
-        papers: keywordResult.papers,
-      };
-    });
-    setSuggested(newSuggestion);
-    writeToCache("nobel-question", newSuggestion);
     const toCache = {
       question: input,
-      response: newSuggestion,
+      response: suggestion,
     };
     writeToCache("nobel-history", [toCache, ...history]);
     setHistory([toCache, ...history]);
@@ -121,8 +99,6 @@ const ModalContent: React.FC<IModalContentProps> = ({ inputValue }) => {
     setSuggested(suggestion);
     setInput(question);
   };
-
-  console.log();
 
   return (
     <Box
@@ -230,12 +206,11 @@ const ModalContent: React.FC<IModalContentProps> = ({ inputValue }) => {
             </Typography>
             {suggested.map((suggestion: any, index: number) => (
               <SuggestedWord
-                key={index}
+                key={`suggestion-${index}`}
                 opened={openedIdx === index}
                 setOpened={() => handleOpen(index)}
                 word={suggestion.keyword}
                 definition={suggestion.definition}
-                links={suggestion.papers}
               />
             ))}
           </Box>

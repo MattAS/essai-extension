@@ -2,19 +2,20 @@ import axios from "axios";
 import { Microscope } from "lucide-react";
 import React from "react";
 import { useEffect, useMemo, useState } from "react";
-import Button from "../../../../components/Button";
-import TextQuestion from "../../../../components/Icons/TextQuestion";
-import { readCache, writeToCache } from "../../../../utils/cache";
+import Button from "../../../../../components/Button";
+import TextQuestion from "../../../../../components/Icons/TextQuestion";
+import { readCache, writeToCache } from "../../../../../utils/cache";
 import Window from "./Window";
 
 interface IExplainWindowProps {
   selection: string;
+  buttonCallback: (from?: string) => void;
 }
 
 type Ref = HTMLDivElement;
 
 const ExplainWindow = React.forwardRef<Ref, IExplainWindowProps>(
-  ({ selection }, ref) => {
+  ({ selection, buttonCallback }, ref) => {
     const [summary, setSummary] = useState<string>("");
 
     useEffect(() => {
@@ -30,12 +31,9 @@ const ExplainWindow = React.forwardRef<Ref, IExplainWindowProps>(
           return;
         } else {
           axios
-            .post(
-              "https://essai-go-api-le4jqewulq-ue.a.run.app/api/summary/highlight",
-              {
-                text: selection,
-              }
-            )
+            .post(process.env.API_ROUTE + "/summary/highlight", {
+              text: selection,
+            })
             .then((response) => {
               console.log(response);
               writeToCache("nobel-highlight", {
@@ -53,12 +51,12 @@ const ExplainWindow = React.forwardRef<Ref, IExplainWindowProps>(
 
     const DeepDiveButton = useMemo(() => {
       return (
-        <Button>
+        <Button onClick={() => buttonCallback("explain")}>
           <Microscope size={20} color="white" />
           Deep Dive
         </Button>
       );
-    }, []);
+    }, [buttonCallback]);
 
     return (
       <Window

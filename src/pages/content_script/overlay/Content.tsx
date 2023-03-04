@@ -17,7 +17,8 @@ import TextQuestion from "../../../components/Icons/TextQuestion";
 import TooltipIcon from "../../../components/TooltipIcon";
 import SearchModal from "../search/components/SearchModal";
 import { allowedList } from "./allowedList";
-import ShowWindow from "./components/ShowWindow";
+import DeepDiveModal from "./components/DeepDiveModal/DeepDiveModal";
+import ShowWindow from "./components/Windows/ShowWindow";
 import { useOutsideAlerter } from "./useOutsideAlerter";
 
 const Content = () => {
@@ -26,11 +27,12 @@ const Content = () => {
   const [selection, setSelection] = useState("");
   const [openModal, setOpenModal] = useState(false);
   const [isOpenWindow, setIsOpenWindow] = useState<
-    "summarize" | "highlight" | "feedback" | ""
+    "summarize" | "highlight" | "feedback" | "deepdive" | ""
   >("");
   const [showOverlay, setShowOverlay] = useState(false);
   const port = chrome.runtime.connect({ name: "nobel-overlay" });
   const [showClose, setShowClose] = useState(false);
+  const [deepDiveFrom, setDeepDiveFrom] = useState<"explain" | "">("");
 
   useEffect(() => {
     port.postMessage({ message: "loaded" });
@@ -75,6 +77,16 @@ const Content = () => {
     setShowClose(false);
   };
 
+  const handleOpenDeepDive = (from: string) => {
+    console.log("handleOpenDeepDive");
+    if (from === "explain") {
+      setDeepDiveFrom("explain");
+    } else {
+      setDeepDiveFrom("");
+    }
+    setIsOpenWindow("deepdive");
+  };
+
   const wrapperRef = useRef<HTMLDivElement>(null);
 
   useOutsideAlerter(
@@ -87,7 +99,7 @@ const Content = () => {
   );
 
   return (
-    <AnimatePresence>
+    <>
       {showOverlay && (
         <Box
           key={"overlay"}
@@ -115,6 +127,7 @@ const Content = () => {
               value={selection}
               ref={wrapperRef}
               key={"nobel-window"}
+              buttonCallback={handleOpenDeepDive}
             />
           )}
           <Box
@@ -180,7 +193,12 @@ const Content = () => {
                   />
                 </TooltipIcon>
                 <TooltipIcon tooltip="Deep Dive - Coming Soon">
-                  <MicroscopeCrossed size={26} color={"#6D6D6D"} />
+                  <Microscope
+                    size={25}
+                    color={"white"}
+                    cursor={"pointer"}
+                    onClick={() => setIsOpenWindow("deepdive")}
+                  />
                 </TooltipIcon>
                 <TooltipIcon tooltip="Explain Selection">
                   <TextQuestion
@@ -246,7 +264,16 @@ const Content = () => {
         handleClose={() => setOpenModal(false)}
         inputValue=""
       />
-    </AnimatePresence>
+      <DeepDiveModal
+        opened={isOpenWindow === "deepdive"}
+        handleClose={() => {
+          setIsOpenWindow("");
+          setDeepDiveFrom("");
+        }}
+        selection={selection}
+        deepDiveFrom={deepDiveFrom}
+      />
+    </>
   );
 };
 
