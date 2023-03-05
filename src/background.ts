@@ -6,4 +6,8 @@ chrome.runtime.onConnect.addListener((port) => {
   }
 })
 
+chrome.runtime.onUpdateAvailable.addListener((details) => {
+  chrome.runtime.reload()
+})
+
 export {}
