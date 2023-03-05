@@ -104,7 +104,7 @@ const SuggestedWord: React.FC<ISuggestedWordProps> = ({
         sx={{
           display: "flex",
           justifyContent: "space-between",
-          alignItems: !openArticles ? "center" : "flex-start",
+          alignItems: "center",
           gap: opened && openArticles ? 5 : 0,
         }}
       >
@@ -113,7 +113,7 @@ const SuggestedWord: React.FC<ISuggestedWordProps> = ({
             display: "flex",
             gap: 2,
             overflow: "hidden",
-            flexDirection: !opened || !openArticles ? "row" : "column",
+            flexDirection: "row",
           }}
         >
           <Typography
@@ -128,21 +128,23 @@ const SuggestedWord: React.FC<ISuggestedWordProps> = ({
           >
             {word}
           </Typography>
-          <Typography
-            noWrap
-            sx={{
-              "&:first-letter": {
-                textTransform: "uppercase",
-              },
-              whiteSpace: !openArticles ? "nowrap" : "normal",
-              textOverflow: "ellipsis",
-              flexGrow: 1,
-              color: "white",
-              width: "100%",
-            }}
-          >
-            {definition}
-          </Typography>
+          {!openArticles && (
+            <Typography
+              noWrap
+              sx={{
+                "&:first-letter": {
+                  textTransform: "uppercase",
+                },
+                whiteSpace: "nowrap",
+                textOverflow: "ellipsis",
+                flexGrow: 1,
+                color: "white",
+                width: "100%",
+              }}
+            >
+              {definition}
+            </Typography>
+          )}
         </Box>
         <Box
           sx={{
@@ -173,6 +175,27 @@ const SuggestedWord: React.FC<ISuggestedWordProps> = ({
           </Box>
         </Box>
       </Box>
+      {opened && openArticles && (
+        <Box
+          sx={{
+            width: "100%",
+            display: "flex",
+          }}
+        >
+          <Typography
+            sx={{
+              "&:first-letter": {
+                textTransform: "uppercase",
+              },
+              flexGrow: 1,
+              color: "white",
+              width: "100%",
+            }}
+          >
+            {definition}
+          </Typography>
+        </Box>
+      )}
       {opened && openArticles && (
         <>
           <Box
