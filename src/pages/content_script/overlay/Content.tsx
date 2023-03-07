@@ -98,6 +98,20 @@ const Content = () => {
     }, [])
   );
 
+  const handleOpenWindow = (name: string) => {
+    if (isOpenWindow === name) {
+      setIsOpenWindow("");
+      return;
+    }
+    if (name === "summarize") {
+      setIsOpenWindow("summarize");
+    } else if (name === "highlight") {
+      setIsOpenWindow("highlight");
+    } else if (name === "feedback") {
+      setIsOpenWindow("feedback");
+    }
+  };
+
   return (
     <>
       {showOverlay && (
@@ -189,7 +203,9 @@ const Content = () => {
                     size={24}
                     color={"white"}
                     cursor={"pointer"}
-                    onClick={() => setIsOpenWindow("summarize")}
+                    onClick={() => {
+                      handleOpenWindow("summarize");
+                    }}
                   />
                 </TooltipIcon>
                 <TooltipIcon tooltip="Deep Dive">
@@ -205,7 +221,11 @@ const Content = () => {
                     size={25}
                     color={selection === "" ? "#6D6D6D" : "white"}
                     cursor={"pointer"}
-                    onClick={() => setIsOpenWindow("highlight")}
+                    onClick={() =>
+                      setIsOpenWindow(
+                        isOpenWindow === "highlight" ? "" : "highlight"
+                      )
+                    }
                   />
                 </TooltipIcon>
                 <TooltipIcon tooltip="Close">
@@ -251,7 +271,11 @@ const Content = () => {
                   size={25}
                   color={"white"}
                   cursor={"pointer"}
-                  onClick={() => setIsOpenWindow("feedback")}
+                  onClick={() =>
+                    setIsOpenWindow(
+                      isOpenWindow === "feedback" ? "" : "feedback"
+                    )
+                  }
                 />
               </TooltipIcon>
             </Box>

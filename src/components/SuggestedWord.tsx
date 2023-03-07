@@ -56,6 +56,9 @@ const SuggestedWord: React.FC<ISuggestedWordProps> = ({
                 .split("?")
                 .map((query: string) => {
                   if (query !== "") {
+                    if (query[0] === ",") {
+                      query = query.substring(1, query.length);
+                    }
                     return query.trim() + "?";
                   }
                 })

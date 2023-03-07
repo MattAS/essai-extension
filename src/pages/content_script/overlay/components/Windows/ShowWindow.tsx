@@ -25,6 +25,8 @@ const ShowWindow = React.forwardRef<Ref, IShowWindowProps>(
       );
     } else if (name === "feedback") {
       return <FeedbackWindow ref={ref} />;
+    } else if (name === "") {
+      return <></>;
     } else {
       return <></>;
     }
