@@ -44,7 +44,6 @@ const SummarizeWindow = React.forwardRef<Ref, ISummarizeWindowProps>(
             .then((blob) => {
               const text = loadPdf(blob);
               text.then((body) => {
-                console.log(body);
                 axios
                   .post(process.env.API_ROUTE + "/summary/long/web", {
                     context: body,
