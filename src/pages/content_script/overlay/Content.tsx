@@ -13,7 +13,6 @@ import {
 } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import EnhancedSearch from "../../../components/Icons/EnhancedSearch";
-import MicroscopeCrossed from "../../../components/Icons/MicroscopeCrossed";
 import TextQuestion from "../../../components/Icons/TextQuestion";
 import TooltipIcon from "../../../components/TooltipIcon";
 import SearchModal from "../search/components/SearchModal";
@@ -71,7 +70,7 @@ const Content = () => {
   });
 
   useEffect(() => {
-    port.onMessage.addListener((msg) => {
+    port.onMessage.addListener((msg: any) => {
       if (msg.message === "show") {
         setShowOverlay(!showOverlay);
       }
@@ -103,7 +102,7 @@ const Content = () => {
 
   useOutsideAlerter(
     wrapperRef,
-    useCallback((isInBounds) => {
+    useCallback((isInBounds: boolean) => {
       if (!isInBounds) {
         setIsOpenWindow("");
       }
