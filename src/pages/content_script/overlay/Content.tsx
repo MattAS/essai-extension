@@ -1,4 +1,5 @@
 import { Box, Grow, Tooltip, Typography, Zoom } from "@mui/material";
+import axios from "axios";
 import { AnimatePresence, motion } from "framer-motion";
 import {
   ArrowDown,
@@ -12,7 +13,6 @@ import {
 } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import EnhancedSearch from "../../../components/Icons/EnhancedSearch";
-import MicroscopeCrossed from "../../../components/Icons/MicroscopeCrossed";
 import TextQuestion from "../../../components/Icons/TextQuestion";
 import TooltipIcon from "../../../components/TooltipIcon";
 import SearchModal from "../search/components/SearchModal";
@@ -34,17 +34,28 @@ const Content = () => {
   const [showClose, setShowClose] = useState(false);
   const [deepDiveFrom, setDeepDiveFrom] = useState<"explain" | "">("");
 
+  const [withWhiteBorder, setWithWhiteBorder] = useState(false);
+
   useEffect(() => {
     port.postMessage({ message: "loaded" });
     const url = new URL(window.location.href);
     if (!"www".includes(url.hostname)) {
       url.hostname = "www." + url.hostname;
     }
+
+    // Check if the current url matches https://dashboard.getnobel.io/* or https://localhost:3000/*
+    const isDashboard = url.hostname.includes("dashboard.getnobel.io");
+    const isLocalhost = url.hostname.includes("localhost");
+
+    if (isDashboard || isLocalhost) {
+      setWithWhiteBorder(true);
+    }
+
     const isAllowed = allowedList.some((allowedUrl) => {
       const allowedUrlObj = new URL(allowedUrl);
       return allowedUrlObj.hostname === url.hostname;
     });
-    if (isAllowed) {
+    if (isAllowed || isDashboard || isLocalhost) {
       setShowOverlay(true);
     }
   }, []);
@@ -59,7 +70,7 @@ const Content = () => {
   });
 
   useEffect(() => {
-    port.onMessage.addListener((msg) => {
+    port.onMessage.addListener((msg: any) => {
       if (msg.message === "show") {
         setShowOverlay(!showOverlay);
       }
@@ -91,12 +102,47 @@ const Content = () => {
 
   useOutsideAlerter(
     wrapperRef,
-    useCallback((isInBounds) => {
+    useCallback((isInBounds: boolean) => {
       if (!isInBounds) {
         setIsOpenWindow("");
       }
     }, [])
   );
+
+  const handleSummary = async () => {
+    const res = await fetch(window.location.href);
+    const contentType = res.headers.get("content-type");
+    setIsOpenWindow("summarize");
+    if (contentType && contentType.includes("application/pdf")) {
+      const blob = await res.blob();
+      const formData = new FormData();
+      const name = window.location.href.split("/").pop();
+      if (!name) return;
+      formData.append("pdf", blob);
+      formData.append("name", name);
+      try {
+        const response = await fetch(
+          "https://nobel-go-api-dev-le4jqewulq-ue.a.run.app/api/pdf/upload",
+          {
+            method: "POST",
+            body: formData,
+          }
+        );
+        const data = await response.json();
+        if (data.message == "File uploaded successfully") {
+          // Open new tab with the pdf
+          setIsOpenWindow("");
+          window.open(
+            `https://dashboard.getnobel.io/pdf/${name}`,
+            "_blank",
+            "noopener,noreferrer"
+          );
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  };
 
   const handleOpenWindow = (name: string) => {
     if (isOpenWindow === name) {
@@ -104,7 +150,8 @@ const Content = () => {
       return;
     }
     if (name === "summarize") {
-      setIsOpenWindow("summarize");
+      // Check if page is a pdf from content-type
+      handleSummary();
     } else if (name === "highlight") {
       setIsOpenWindow("highlight");
     } else if (name === "feedback") {
@@ -163,6 +210,9 @@ const Content = () => {
                 backgroundColor: "#080A29",
                 overflow: "hidden",
                 paddingBottom: "10px!important",
+                boxShadow: withWhiteBorder
+                  ? "0px 0px 20px 0px rgba(255,255,255,0.20)"
+                  : "",
               }}
               onMouseEnter={() => setShowClose(true)}
               onMouseLeave={() => setShowClose(false)}
@@ -259,6 +309,9 @@ const Content = () => {
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
+                boxShadow: withWhiteBorder
+                  ? "0px 0px 20px 0px rgba(255,255,255,0.20)"
+                  : "",
               }}
             >
               <TooltipIcon

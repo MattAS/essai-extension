@@ -35,32 +35,44 @@ const SummarizeWindow = React.forwardRef<Ref, ISummarizeWindowProps>(
 
     useEffect(() => {
       const url = window.location.href;
-      // Get body html of the page
+
+      // Check if url is has "localhost:3000/pdf" or "dashboard.getnobel.io/pdf"
+      console.log(url);
+      if (
+        url.includes("localhost:3000/pdf") ||
+        url.includes("dashboard.getnobel.io/pdf")
+      ) {
+        // File name is the last part of the url
+        const fileName = url.split("/").pop();
+        // Get the pdf file from the server
+        axios
+          .get(process.env.API_ROUTE + `/pdf/download/${fileName}`, {
+            responseType: "arraybuffer",
+          })
+          .then((res) => {
+            // Convert string to blob
+            const blob = new Blob([res.data], { type: "application/pdf" });
+
+            // Convert the pdf to text
+            loadPdf(blob).then((text) => {
+              // Send the text to the server to get the summary
+              axios
+                .post(process.env.API_ROUTE + "/summary/long/web", {
+                  context: text,
+                  url: url,
+                })
+                .then((response) => {
+                  setSummary(response.data.result);
+                })
+                .catch((err) => {
+                  console.log(err);
+                });
+            });
+          });
+      }
       fetch(url).then((response) => {
         // Check if the response is a pdf
-        if (response.headers.get("content-type")?.includes("pdf")) {
-          response
-            .blob()
-            .then((blob) => {
-              const text = loadPdf(blob);
-              text.then((body) => {
-                axios
-                  .post(process.env.API_ROUTE + "/summary/long/web", {
-                    context: body,
-                    url: url,
-                  })
-                  .then((response) => {
-                    setSummary(response.data.result);
-                  })
-                  .catch((err) => {
-                    console.log(err);
-                  });
-              });
-            })
-            .catch((err) => {
-              console.log(err);
-            });
-        } else if (response.headers.get("content-type")?.includes("html")) {
+        if (response.headers.get("content-type")?.includes("html")) {
           const body = document.body.innerText.replace("\n", " ");
           axios
             .post(process.env.API_ROUTE + "/summary/long/web", {

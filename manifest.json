@@ -1,29 +1,27 @@
 {
-    "manifest_version": 3,
-    "name": "Nobel",
-    "version": "0.2.0",
-    "action": {
-        "default_title": "Nobel Research Assistant"
+  "manifest_version": 3,
+  "name": "Nobel",
+  "version": "0.4.0",
+  "action": {
+    "default_title": "Nobel Research Assistant"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://www.google.com/*"],
+      "js": ["./src/pages/content_script/search/index.tsx"]
     },
-    "content_scripts": [
-        {
-            "matches": ["https://www.google.com/*"],
-            "js": ["./src/pages/content_script/search/index.tsx"]
-        },
-        { 
-            "matches": ["<all_urls>"],
-            "exclude_matches": ["https://www.twitch.tv/*"],
-            "js": ["./src/pages/content_script/overlay/index.tsx"]
-        }
-    ],
-    "background": {
-        "service_worker": "src/background.ts",
-        "type": "module"
-    },
-    "permissions": [
-        "storage"
-    ],
-    "icons": {
-        "128": "src/assets/NobeLogoSquare.png"
+    {
+      "matches": ["<all_urls>"],
+      "exclude_matches": ["https://www.twitch.tv/*"],
+      "js": ["./src/pages/content_script/overlay/index.tsx"]
     }
+  ],
+  "background": {
+    "service_worker": "src/background.ts",
+    "type": "module"
+  },
+  "permissions": ["storage"],
+  "icons": {
+    "128": "src/assets/NobeLogoSquare.png"
   }
+}
