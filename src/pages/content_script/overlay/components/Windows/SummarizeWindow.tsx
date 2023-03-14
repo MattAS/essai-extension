@@ -70,24 +70,23 @@ const SummarizeWindow = React.forwardRef<Ref, ISummarizeWindowProps>(
             });
           });
       }
-      // Get body html of the page
-      // fetch(url).then((response) => {
-      //   // Check if the response is a pdf
-      //   if (response.headers.get("content-type")?.includes("html")) {
-      //     const body = document.body.innerText.replace("\n", " ");
-      //     axios
-      //       .post(process.env.API_ROUTE + "/summary/long/web", {
-      //         context: body,
-      //         url: url,
-      //       })
-      //       .then((response) => {
-      //         setSummary(response.data.result);
-      //       })
-      //       .catch((err) => {
-      //         console.log(err);
-      //       });
-      //   }
-      // });
+      fetch(url).then((response) => {
+        // Check if the response is a pdf
+        if (response.headers.get("content-type")?.includes("html")) {
+          const body = document.body.innerText.replace("\n", " ");
+          axios
+            .post(process.env.API_ROUTE + "/summary/long/web", {
+              context: body,
+              url: url,
+            })
+            .then((response) => {
+              setSummary(response.data.result);
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+        }
+      });
     }, []);
 
     return (
